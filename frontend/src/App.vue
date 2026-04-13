@@ -37,6 +37,10 @@
             <el-icon><Cpu /></el-icon>
             <template #title>{{ t('nav.neutralino') }}</template>
           </el-menu-item>
+          <el-menu-item index="/api-demo">
+            <el-icon><Tickets /></el-icon>
+            <template #title>API Demo</template>
+          </el-menu-item>
           <el-menu-item index="/window-control">
             <el-icon><FullScreen /></el-icon>
             <template #title>{{ t('nav.windowControl') }}</template>
@@ -63,7 +67,7 @@
 import { computed, onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
-import { Fold, Expand, HomeFilled, Cpu, FullScreen, Setting, Grid, Document } from '@element-plus/icons-vue'
+import { Fold, Expand, HomeFilled, Cpu, FullScreen, Setting, Grid, Document, Tickets } from '@element-plus/icons-vue'
 import TitleBar from '@/components/TitleBar.vue'
 import { useSettingStore } from '@/stores'
 

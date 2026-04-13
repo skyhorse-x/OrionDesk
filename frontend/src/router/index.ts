@@ -25,6 +25,11 @@ const routes = [
     path: "/window-control",
     name: "WindowControl",
     component: () => import("@/views/WindowControl.vue")
+  },
+  {
+    path: "/api-demo",
+    name: "ApiDemo",
+    component: () => import("@/views/ApiDemoView.vue")
   }
 ]
 
