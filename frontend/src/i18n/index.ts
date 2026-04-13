@@ -2,6 +2,13 @@ import { createI18n } from "vue-i18n"
 
 const messages = {
   en: {
+    nav: {
+      home: "Home",
+      doc: "Documentation",
+      neutralino: "Neutralino Demo",
+      windowControl: "Window Control",
+      settings: "Settings"
+    },
     doc: {
       title: "Documentation",
       language: "Language",
@@ -26,6 +33,13 @@ const messages = {
     }
   },
   zh: {
+    nav: {
+      home: "首页",
+      doc: "说明文档",
+      neutralino: "Neutralino 演示",
+      windowControl: "窗口控制",
+      settings: "设置"
+    },
     doc: {
       title: "说明文档",
       language: "语言",
