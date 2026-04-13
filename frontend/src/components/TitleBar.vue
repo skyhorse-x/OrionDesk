@@ -81,7 +81,7 @@ const toggleMaximize = async () => {
   if (ready) {
     try {
       if (isMaximized.value) {
-        await getNeutralino().window.restore()
+        await getNeutralino().window.unmaximize()
       } else {
         await getNeutralino().window.maximize()
       }

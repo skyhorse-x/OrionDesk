@@ -7,6 +7,10 @@ import router from "./router"
 import i18n from "./i18n"
 import "./styles.css"
 
+if (typeof window !== 'undefined' && window.Neutralino) {
+  window.Neutralino.init()
+}
+
 const app = createApp(App)
 const pinia = createPinia()
 

@@ -3,10 +3,14 @@ import vue from "@vitejs/plugin-vue"
 import path from "node:path"
 import fs from "node:fs"
 
-function neutralinoVarsPlugin() {
+function neutralinoVarsPlugin(command) {
   return {
     name: "neutralino-vars",
     transformIndexHtml(html) {
+      if (command !== "serve") {
+        return html
+      }
+
       try {
         const authPath = path.resolve(__dirname, "../.tmp/auth_info.json")
         if (fs.existsSync(authPath)) {
@@ -36,9 +40,9 @@ function neutralinoVarsPlugin() {
   }
 }
 
-export default defineConfig({
+export default defineConfig(({ command }) => ({
   root: path.resolve(__dirname),
-  plugins: [vue(), neutralinoVarsPlugin()],
+  plugins: [vue(), neutralinoVarsPlugin(command)],
   base: "./",
   resolve: {
     alias: {
@@ -64,6 +68,6 @@ export default defineConfig({
   },
   build: {
     outDir: path.resolve(__dirname, "../resources"),
-    emptyOutDir: false
+    emptyOutDir: true
   }
-})
+}))

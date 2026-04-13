@@ -27,31 +27,6 @@ interface NeutralinoComputer {
   }>
 }
 
-interface Filter {
-  name: string
-  extensions: string[]
-}
-
-interface OpenDialogOptions {
-  title?: string
-  multiSelections?: boolean
-  filters?: Filter[]
-  defaultPath?: string
-  directory?: boolean
-}
-
-interface FolderDialogOptions {
-  title?: string
-  defaultPath?: string
-}
-
-interface SaveDialogOptions {
-  title?: string
-  forceOverwrite?: boolean
-  filters?: Filter[]
-  defaultPath?: string
-}
-
 interface SpawnedProcess {
   id: string
   pid: number
@@ -68,52 +43,53 @@ interface SpawnOptions {
   stdErr?: boolean
 }
 
-interface MessageBoxChoice {
-  OK: string
-  OK_CANCEL: string
-  YES_NO: string
-  YES_NO_CANCEL: string
-  RETRY_CANCEL: string
-  ABORT_RETRY_IGNORE: string
-}
-
-interface Icon {
-  WARNING: string
-  ERROR: string
-  INFO: string
-  QUESTION: string
-}
-
-interface NeutralinoDialog {
-  showOpenDialog(title: string, options?: OpenDialogOptions): Promise<string[]>
-  showSaveDialog(title: string, options?: SaveDialogOptions): Promise<string>
-  showFolderDialog(title: string, options?: FolderDialogOptions): Promise<string>
-  showMessageBox(title: string, content: string, choice?: MessageBoxChoice, icon?: Icon): Promise<string>
-}
+type MessageBoxChoice = 'OK' | 'OK_CANCEL' | 'YES_NO' | 'YES_NO_CANCEL' | 'RETRY_CANCEL' | 'ABORT_RETRY_IGNORE'
+type MessageBoxIcon = 'WARNING' | 'ERROR' | 'INFO' | 'QUESTION'
 
 interface NeutralinoOs {
-  showNotification(title: string, body: string): Promise<void>
+  showOpenDialog(title: string, options?: { multiSelections?: boolean; filters?: Array<{ name: string; extensions: string[] }>; defaultPath?: string; directory?: boolean }): Promise<string[]>
+  showSaveDialog(title: string, options?: { forceOverwrite?: boolean; filters?: Array<{ name: string; extensions: string[] }>; defaultPath?: string }): Promise<string>
+  showFolderDialog(title: string, options?: { defaultPath?: string }): Promise<string>
+  showMessageBox(title: string, content: string, choice?: MessageBoxChoice, icon?: MessageBoxIcon): Promise<string>
+  showNotification(title: string, body: string, icon?: MessageBoxIcon): Promise<void>
   spawnProcess(command: string, options?: SpawnedProcessOptions): Promise<SpawnedProcess>
-  execCommand(command: string, options?: SpawnOptions): Promise<{ output: string }>
+  execCommand(command: string, options?: SpawnOptions): Promise<{ output: string; stderr?: string; error?: string }>
   getEnv(key: string): Promise<string>
   getEnvs(): Promise<Record<string, string>>
   getPath(name: string): Promise<string>
   getSpawnedProcesses(): Promise<SpawnedProcess[]>
   open(url: string): Promise<void>
+  setTray(tray: any): Promise<void>
 }
 
 interface NeutralinoUpdater {
-  checkForUpdates(): Promise<{ available: boolean; version?: string }>
-  install(): Promise<void>
+  checkForUpdates(url: string): Promise<{ applicationId: string; version: string; resourcesURL: string; [key: string]: unknown }>
+  install(): Promise<{ success: boolean; message: string }>
 }
 
 interface NeutralinoWindow {
   minimize(): Promise<void>
   maximize(): Promise<void>
-  restore(): Promise<void>
-  close(): Promise<void>
+  unminimize(): Promise<void>
+  unmaximize(): Promise<void>
+  show(): Promise<void>
+  hide(): Promise<void>
   setAlwaysOnTop(flag: boolean): Promise<void>
   setSize(options: { width: number; height: number; resizable?: boolean }): Promise<void>
+  setMainMenu(menu: NeutralinoMenu): Promise<void>
+}
+
+interface NeutralinoMenu {
+  label: string
+  submenu?: NeutralinoMenuItem[]
+}
+
+interface NeutralinoMenuItem {
+  label?: string
+  accelerator?: string
+  handler?: () => void
+  isEnabled?: boolean
+  submenu?: NeutralinoMenuItem[]
 }
 
 interface NeutralinoApp {
@@ -130,7 +106,6 @@ interface NeutralinoClipboard {
 interface Neutralino {
   init(): void
   computer: NeutralinoComputer
-  dialog: NeutralinoDialog
   os: NeutralinoOs
   updater: NeutralinoUpdater
   window: NeutralinoWindow

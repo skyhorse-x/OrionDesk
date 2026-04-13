@@ -20,7 +20,7 @@
     "frontendLibrary": {
       "projectPath": "/",
       "devCommand": "npm run dev",
-      "buildCommand": "npm run frontend:build",
+      "buildCommand": "bun run frontend:build",
       "devUrl": "http://127.0.0.1:4173",
       "patchFile": "/frontend/index.html",
       "waitTimeout": 30000

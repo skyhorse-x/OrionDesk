@@ -202,7 +202,7 @@ const restoreWindow = async () => {
   const ready = await ensureNeutralinoReady()
   if (!ready) return
   try {
-    await getNeutralino().window.restore()
+    await getNeutralino().window.unmaximize()
     isMaximized.value = false
   } catch (error) {
     console.error(error)

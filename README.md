@@ -311,7 +311,7 @@ DB_PATH=./data/data.db
 
 ```bash
 # 构建桌面应用安装包
-bun run build:all
+neu build
 
 # 构建产物位于 dist/ 目录
 ```

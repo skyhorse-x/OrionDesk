@@ -11,8 +11,10 @@
     "frontend:build": "vite build --config frontend/vite.config.js",
     "shell": "lsof -ti :17870 | xargs -r kill -9; lsof -ti :4173 | xargs -r kill -9; sleep 1; npx @neutralinojs/neu run",
     "build:shell": "npx @neutralinojs/neu build",
-    "build": "bun build --compile server/main.ts --outfile=dist/oriondesk-server --target=bun",
-    "build:all": "bun build --compile server/main.ts --outfile=dist/oriondesk-server --target=bun && npx @neutralinojs/neu build",
+    "build": "npx @neutralinojs/neu build",
+    "build:frontend": "bun run frontend:build",
+    "build:all": "npx @neutralinojs/neu build",
+    "build:all:clean": "npx @neutralinojs/neu build",
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage"

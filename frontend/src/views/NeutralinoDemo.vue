@@ -112,7 +112,7 @@
         <template #header>
           <div class="card-header">
             <el-icon class="card-icon"><ChatLineSquare /></el-icon>
-            <span>Dialogs</span>
+            <span>Native Dialogs</span>
           </div>
         </template>
         <div class="card-content button-group">
@@ -130,6 +130,46 @@
           </el-button>
         </div>
         <p v-if="dialogResult" class="result-text">{{ dialogResult }}</p>
+      </el-card>
+
+      <el-card class="demo-card" shadow="hover">
+        <template #header>
+          <div class="card-header">
+            <el-icon class="card-icon"><Menu /></el-icon>
+            <span>System Tray</span>
+          </div>
+        </template>
+        <div class="card-content button-group">
+          <el-button type="success" @click="setTray">
+            <el-icon><SetUp /></el-icon>
+            Set Tray
+          </el-button>
+          <el-button type="danger" @click="removeTray">
+            <el-icon><Delete /></el-icon>
+            Remove Tray
+          </el-button>
+        </div>
+        <p v-if="trayResult" class="result-text">{{ trayResult }}</p>
+      </el-card>
+
+      <el-card class="demo-card" shadow="hover">
+        <template #header>
+          <div class="card-header">
+            <el-icon class="card-icon"><Grid /></el-icon>
+            <span>Main Menu</span>
+          </div>
+        </template>
+        <div class="card-content button-group">
+          <el-button type="primary" @click="setMainMenu">
+            <el-icon><SetUp /></el-icon>
+            Set Menu
+          </el-button>
+          <el-button type="danger" @click="removeMainMenu">
+            <el-icon><Delete /></el-icon>
+            Remove Menu
+          </el-button>
+        </div>
+        <p v-if="menuResult" class="result-text">{{ menuResult }}</p>
       </el-card>
 
       <el-card class="demo-card command-card" shadow="hover">
@@ -158,6 +198,7 @@
         </template>
         <div class="card-content">
           <p class="update-info">Current version: <strong>{{ appVersion }}</strong></p>
+          <p class="update-info">Demo manifest: <strong>{{ updateManifestUrl }}</strong></p>
           <el-button type="primary" @click="checkForUpdate" :loading="updateLoading">
             <el-icon><Refresh /></el-icon>
             Check for Updates
@@ -170,14 +211,13 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { ElMessage } from 'element-plus'
 import {
   Monitor, Search, Bell, FullScreen, Minus, ZoomOut, RefreshLeft, Close,
   DocumentCopy, CopyDocument, Document, FolderOpened, Download, ChatLineSquare,
-  Warning, QuestionFilled, Edit, Operation, VideoPlay, Upload, Refresh
+  Warning, QuestionFilled, Operation, VideoPlay, Upload, Refresh, Edit, Menu, SetUp, Delete, Grid
 } from '@element-plus/icons-vue'
-import { systemApi } from '@/api/system'
 
 const loading = ref(false)
 const systemInfo = ref('')
@@ -198,6 +238,9 @@ const selectedPath = ref('')
 
 const dialogResult = ref('')
 
+const trayResult = ref('')
+const menuResult = ref('')
+
 const commandText = ref('')
 const commandLoading = ref(false)
 const commandOutput = ref('')
@@ -206,6 +249,7 @@ const updateLoading = ref(false)
 const updateMessage = ref('')
 const updateMessageType = ref<'success' | 'error' | 'info'>('info')
 const appVersion = ref('1.0.0')
+const updateManifestUrl = ref('/neutralino-update.json')
 
 const notificationResultClass = computed(() => ({
   'success-message': notificationResultType.value === 'success',
@@ -249,8 +293,21 @@ const getSystemInfo = async () => {
   loading.value = true
   systemInfo.value = ''
   try {
-    const response = await systemApi.info()
-    systemInfo.value = JSON.stringify(response.data, null, 2)
+    const nl = getNeutralino()
+    const [osInfo, memoryInfo, cpuInfo] = await Promise.all([
+      nl.computer.getOSInfo(),
+      nl.computer.getMemoryInfo(),
+      nl.computer.getCPUInfo()
+    ])
+    systemInfo.value = JSON.stringify(
+      {
+        os: osInfo,
+        memory: memoryInfo,
+        cpu: cpuInfo
+      },
+      null,
+      2
+    )
   } catch (error: any) {
     systemInfo.value = `Error: ${error.message}`
   } finally {
@@ -260,21 +317,21 @@ const getSystemInfo = async () => {
 
 const showNotification = async () => {
   if (!notificationText.value.trim()) {
-    ElMessage.warning('Please enter notification text')
+    notificationResult.value = 'Please enter notification text'
+    notificationResultType.value = 'error'
     return
   }
 
   notificationLoading.value = true
   notificationResult.value = ''
   try {
-    const response = await systemApi.sendNotification('OrionDesk', notificationText.value)
-    notificationResult.value = response.data.message || 'Notification sent!'
+    const title = 'OrionDesk'
+    await getNeutralino().os.showNotification(title, notificationText.value, 'INFO')
+    notificationResult.value = 'Native notification sent via Neutralino.'
     notificationResultType.value = 'success'
-    ElMessage.success(notificationResult.value)
   } catch (error: any) {
-    notificationResult.value = error.response?.data?.error || error.message
+    notificationResult.value = error.message
     notificationResultType.value = 'error'
-    ElMessage.error(notificationResult.value)
   } finally {
     notificationLoading.value = false
   }
@@ -311,7 +368,7 @@ const restoreWindow = async () => {
   if (!ready) return
   windowLoading.value = true
   try {
-    await getNeutralino().window.restore()
+    await getNeutralino().window.unmaximize()
   } catch (error) {
     console.error(error)
   } finally {
@@ -333,11 +390,11 @@ const copyToClipboard = async () => {
 
   clipboardLoading.value = true
   try {
-    await systemApi.clipboard.write(clipboardText.value)
+    await getNeutralino().clipboard.writeText(clipboardText.value)
     clipboardResult.value = 'Copied successfully!'
     clipboardResultType.value = 'success'
   } catch (error: any) {
-    clipboardResult.value = error.response?.data?.error || error.message
+    clipboardResult.value = error.message
     clipboardResultType.value = 'error'
   } finally {
     clipboardLoading.value = false
@@ -348,12 +405,11 @@ const pasteFromClipboard = async () => {
   clipboardLoading.value = true
   clipboardText.value = ''
   try {
-    const response = await systemApi.clipboard.read()
-    clipboardText.value = response.data.text || ''
+    clipboardText.value = await getNeutralino().clipboard.readText()
     clipboardResult.value = 'Pasted successfully!'
     clipboardResultType.value = 'success'
   } catch (error: any) {
-    clipboardResult.value = error.response?.data?.error || error.message
+    clipboardResult.value = error.message
     clipboardResultType.value = 'error'
   } finally {
     clipboardLoading.value = false
@@ -362,49 +418,64 @@ const pasteFromClipboard = async () => {
 
 const openFileDialog = async () => {
   try {
-    const response = await systemApi.dialog.open('Open File')
-    if (response.data.success && response.data.path) {
-      selectedPath.value = `Selected: ${response.data.path}`
+    const response = await getNeutralino().os.showOpenDialog('Open File', {
+      multiSelections: false
+    })
+    if (response.length > 0) {
+      selectedPath.value = `Selected: ${response.join(', ')}`
     }
   } catch (error: any) {
-    console.error(error)
+    selectedPath.value = `Error: ${error.message}`
   }
 }
 
 const openDirectoryDialog = async () => {
   try {
-    const response = await systemApi.dialog.open('Open Directory', true)
-    if (response.data.success && response.data.path) {
-      selectedPath.value = `Selected: ${response.data.path}`
+    const response = await getNeutralino().os.showFolderDialog('Open Directory')
+    if (response) {
+      selectedPath.value = `Selected: ${response}`
     }
   } catch (error: any) {
-    console.error(error)
+    selectedPath.value = `Error: ${error.message}`
   }
 }
 
 const saveFileDialog = async () => {
   try {
-    const response = await systemApi.dialog.save('Save File')
-    if (response.data.success && response.data.path) {
-      selectedPath.value = `Saved: ${response.data.path}`
+    const response = await getNeutralino().os.showSaveDialog('Save File', {
+      defaultPath: 'untitled.txt'
+    })
+    if (response) {
+      selectedPath.value = `Saved: ${response}`
     }
   } catch (error: any) {
-    console.error(error)
+    selectedPath.value = `Error: ${error.message}`
   }
 }
 
 const showAlert = async () => {
   try {
-    await systemApi.dialog.message('alert', 'Alert', 'This is an alert dialog')
+    const response = await getNeutralino().os.showMessageBox(
+      'Alert',
+      'This is an alert dialog',
+      'OK',
+      'INFO'
+    )
+    dialogResult.value = `Button clicked: ${response}`
   } catch (error: any) {
-    console.error(error)
+    dialogResult.value = `Error: ${error.message}`
   }
 }
 
 const showConfirm = async () => {
   try {
-    const response = await systemApi.dialog.message('confirm', 'Confirm', 'Are you sure?')
-    dialogResult.value = response.data.cancelled ? 'User clicked Cancel' : 'User clicked OK'
+    const response = await getNeutralino().os.showMessageBox(
+      'Confirm',
+      'Are you sure?',
+      'YES_NO',
+      'QUESTION'
+    )
+    dialogResult.value = response === 'YES' ? 'User clicked YES' : 'User clicked NO'
   } catch (error: any) {
     dialogResult.value = `Error: ${error.message}`
   }
@@ -423,6 +494,90 @@ const showPrompt = async () => {
   }
 }
 
+const setTray = async () => {
+  const ready = await ensureNeutralinoReady()
+  if (!ready) {
+    trayResult.value = 'Run this feature in Neutralino desktop app'
+    return
+  }
+  try {
+    await getNeutralino().os.setTray({
+      icon: '/resources/icons/tray.png',
+      menuItems: [
+        { label: 'Show', handler: () => getNeutralino().window.show() },
+        { label: 'Hide', handler: () => getNeutralino().window.hide() },
+        { label: 'separator' },
+        { label: 'Quit', handler: () => getNeutralino().app.exit() }
+      ]
+    })
+    trayResult.value = 'Tray icon set successfully'
+  } catch (error: any) {
+    trayResult.value = `Error: ${error.message}`
+  }
+}
+
+const removeTray = async () => {
+  const ready = await ensureNeutralinoReady()
+  if (!ready) return
+  try {
+    await getNeutralino().os.setTray({ icon: '', menuItems: [] })
+    trayResult.value = 'Tray icon removed'
+  } catch (error: any) {
+    trayResult.value = `Error: ${error.message}`
+  }
+}
+
+const setMainMenu = async () => {
+  const ready = await ensureNeutralinoReady()
+  if (!ready) {
+    menuResult.value = 'Run this feature in Neutralino desktop app'
+    return
+  }
+  try {
+    await getNeutralino().window.setMainMenu({
+      label: 'OrionDesk',
+      submenu: [
+        {
+          label: 'File',
+          submenu: [
+            { label: 'New', accelerator: 'CmdOrCtrl+N', handler: () => ElMessage.success('New clicked') },
+            { label: 'Open', accelerator: 'CmdOrCtrl+O', handler: () => ElMessage.success('Open clicked') },
+            { label: 'separator' },
+            { label: 'Exit', accelerator: 'CmdOrCtrl+Q', handler: () => getNeutralino().app.exit() }
+          ]
+        },
+        {
+          label: 'Edit',
+          submenu: [
+            { label: 'Undo', accelerator: 'CmdOrCtrl+Z', handler: () => ElMessage.success('Undo clicked') },
+            { label: 'Redo', accelerator: 'CmdOrCtrl+Shift+Z', handler: () => ElMessage.success('Redo clicked') }
+          ]
+        },
+        {
+          label: 'Help',
+          submenu: [
+            { label: 'About', handler: () => ElMessage.info('OrionDesk v1.0.0') }
+          ]
+        }
+      ]
+    })
+    menuResult.value = 'Main menu set successfully'
+  } catch (error: any) {
+    menuResult.value = `Error: ${error.message}`
+  }
+}
+
+const removeMainMenu = async () => {
+  const ready = await ensureNeutralinoReady()
+  if (!ready) return
+  try {
+    await getNeutralino().window.setMainMenu({ label: '', submenu: [] })
+    menuResult.value = 'Main menu removed'
+  } catch (error: any) {
+    menuResult.value = `Error: ${error.message}`
+  }
+}
+
 const executeCommand = async () => {
   if (!commandText.value.trim()) {
     commandOutput.value = 'Please enter a command'
@@ -432,10 +587,13 @@ const executeCommand = async () => {
   commandLoading.value = true
   commandOutput.value = ''
   try {
-    const response = await systemApi.execCommand(commandText.value)
-    commandOutput.value = response.data.output || response.data.error || 'Command executed'
+    const response = await getNeutralino().os.execCommand(commandText.value, {
+      stdOut: true,
+      stdErr: true
+    })
+    commandOutput.value = response.output || 'Command executed'
   } catch (error: any) {
-    commandOutput.value = error.response?.data?.error || error.message
+    commandOutput.value = error.message
   } finally {
     commandLoading.value = false
   }
@@ -452,16 +610,10 @@ const checkForUpdate = async () => {
   updateLoading.value = true
   updateMessage.value = ''
   try {
-    const updateInfo = await getNeutralino().updater.checkForUpdates()
-    if (updateInfo?.available) {
-      updateMessage.value = `Update available: ${updateInfo.version}`
-      updateMessageType.value = 'success'
-      ElMessage.success(`Update ${updateInfo.version} is available!`)
-    } else {
-      updateMessage.value = 'You are running the latest version'
-      updateMessageType.value = 'info'
-      ElMessage.info('You are running the latest version')
-    }
+    const updateInfo = await getNeutralino().updater.checkForUpdates(updateManifestUrl.value)
+    updateMessage.value = `Manifest loaded: ${updateInfo.version}`
+    updateMessageType.value = 'success'
+    ElMessage.success(`Loaded update manifest for version ${updateInfo.version}`)
   } catch (error: any) {
     updateMessage.value = `Check failed: ${error.message}`
     updateMessageType.value = 'error'
@@ -469,6 +621,12 @@ const checkForUpdate = async () => {
     updateLoading.value = false
   }
 }
+
+onMounted(() => {
+  if (isNeutralino() && window.Neutralino) {
+    window.Neutralino.init()
+  }
+})
 </script>
 
 <style scoped>
