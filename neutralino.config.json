@@ -1,0 +1,55 @@
+{
+  "applicationId": "com.oriondesk.app",
+  "applicationName": "OrionDesk",
+  "version": "1.0.0",
+  "defaultMode": "window",
+  "port": 0,
+  "enableServer": true,
+  "enableNativeAPI": true,
+  "documentRoot": "/resources/",
+  "url": "/",
+  "cli": {
+    "binaryName": "oriondesk",
+    "resourcesPath": "/resources/",
+    "extensionsPath": "/extensions/",
+    "clientLibrary": "/resources/neutralino.js",
+    "binaryVersion": "6.5.0",
+    "clientVersion": "6.5.0",
+    "distributionPath": "/dist/",
+    "autoReloadExclude": ".*\\.log$",
+    "frontendLibrary": {
+      "projectPath": "/",
+      "devCommand": "npm run dev",
+      "buildCommand": "npm run frontend:build",
+      "devUrl": "http://127.0.0.1:4173",
+      "patchFile": "/frontend/index.html",
+      "waitTimeout": 30000
+    }
+  },
+  "nativeAllowList": [
+    "window.*",
+    "app.*",
+    "clipboard.*",
+    "os.*",
+    "computer.*",
+    "filesystem.*",
+    "dialog.*",
+    "events.*",
+    "storage.*",
+    "debug.*"
+  ],
+  "modes": {
+    "window": {
+      "title": "OrionDesk",
+      "width": 1280,
+      "height": 800,
+      "minWidth": 1024,
+      "minHeight": 600,
+      "resizable": true,
+      "maximize": false,
+      "enableInspector": true,
+      "injectClientLibrary": true,
+      "useSavedState": true
+    }
+  }
+}
