@@ -109,6 +109,38 @@
           <ApiDemo title="window.print()" description="Displays the native print dialog" :code="windowPrintCode">
             <el-button type="primary" @click="runWindowPrint">Execute</el-button>
           </ApiDemo>
+
+          <ApiDemo title="window.isMinimized()" description="Returns true if window is minimized" :code="windowIsMinimizedCode">
+            <el-button type="info" @click="runWindowIsMinimized">Check</el-button>
+            <span v-if="windowResult" class="result-inline">{{ windowResult }}</span>
+          </ApiDemo>
+
+          <ApiDemo title="window.isVisible()" description="Returns true if window is visible" :code="windowIsVisibleCode">
+            <el-button type="info" @click="runWindowIsVisible">Check</el-button>
+            <span v-if="windowResult" class="result-inline">{{ windowResult }}</span>
+          </ApiDemo>
+
+          <ApiDemo title="window.isFullScreen()" description="Returns true if window is in full screen mode" :code="windowIsFullScreenCode">
+            <el-button type="info" @click="runWindowIsFullScreen">Check</el-button>
+            <span v-if="windowResult" class="result-inline">{{ windowResult }}</span>
+          </ApiDemo>
+
+          <ApiDemo title="window.setBorderless(borderless)" description="Enables or disables borderless mode" :code="windowBorderlessCode">
+            <el-button type="primary" @click="runWindowBorderless(true)">Borderless</el-button>
+            <el-button type="warning" @click="runWindowBorderless(false)">Normal</el-button>
+          </ApiDemo>
+
+          <ApiDemo title="window.setIcon(icon)" description="Sets the window icon" :code="windowSetIconCode">
+            <el-button type="primary" @click="runWindowSetIcon">Set Icon</el-button>
+          </ApiDemo>
+
+          <ApiDemo title="window.setDraggableRegion(elementId)" description="Makes an element the draggable region" :code="windowDraggableCode">
+            <el-button type="primary" @click="runWindowDraggable('draggable-header')">Set Draggable</el-button>
+          </ApiDemo>
+
+          <ApiDemo title="window.snapshot()" description="Captures a screenshot of the window" :code="windowSnapshotCode">
+            <el-button type="primary" @click="runWindowSnapshot">Capture</el-button>
+          </ApiDemo>
         </div>
       </el-tab-pane>
 
@@ -352,6 +384,155 @@
           </ApiDemo>
         </div>
       </el-tab-pane>
+
+      <el-tab-pane label="Updater" name="updater">
+        <template #label>
+          <span class="tab-label"><el-icon><Refresh /></el-icon> Updater</span>
+        </template>
+        <div class="api-section">
+          <ApiDemo title="updater.checkForUpdate()" description="Checks for application updates" :code="updaterCheckCode">
+            <el-button type="primary" @click="runUpdaterCheck">Check</el-button>
+          </ApiDemo>
+
+          <ApiDemo title="updater.downloadUpdate()" description="Downloads the available update" :code="updaterDownloadCode">
+            <el-button type="primary" @click="runUpdaterDownload">Download</el-button>
+          </ApiDemo>
+        </div>
+      </el-tab-pane>
+
+      <el-tab-pane label="Events" name="events">
+        <template #label>
+          <span class="tab-label"><el-icon><Bell /></el-icon> Events</span>
+        </template>
+        <div class="api-section">
+          <ApiDemo title="events.on(event, handler)" description="Registers an event listener" :code="eventsOnCode">
+            <el-button type="primary" @click="runEventsOn">Listen</el-button>
+          </ApiDemo>
+
+          <ApiDemo title="events.off(event, handler)" description="Unregisters an event listener" :code="eventsOffCode">
+            <el-button type="warning" @click="runEventsOff">Unlisten</el-button>
+          </ApiDemo>
+
+          <ApiDemo title="events.broadcast(event, data)" description="Broadcasts an event to all instances" :code="eventsBroadcastCode">
+            <el-button type="primary" @click="runEventsBroadcast">Broadcast</el-button>
+          </ApiDemo>
+
+          <ApiDemo title="app.broadcast(event, data)" description="Dispatches event to all app instances" :code="appBroadcastCode">
+            <el-button type="primary" @click="runAppBroadcast">Broadcast</el-button>
+          </ApiDemo>
+        </div>
+      </el-tab-pane>
+
+      <el-tab-pane label="Practice" name="practice">
+        <template #label>
+          <span class="tab-label"><el-icon><Operation /></el-icon> Practice</span>
+        </template>
+        <div class="api-section practice-grid">
+          <el-card class="demo-card" shadow="hover">
+            <template #header>
+              <div class="card-header">
+                <el-icon class="card-icon"><Monitor /></el-icon>
+                <span>System Information</span>
+              </div>
+            </template>
+            <div class="card-content">
+              <el-button type="primary" @click="getSystemInfo" :loading="loading">
+                <el-icon><Search /></el-icon>
+                Get System Info
+              </el-button>
+              <pre v-if="systemInfo" class="output-pre">{{ systemInfo }}</pre>
+            </div>
+          </el-card>
+
+          <el-card class="demo-card" shadow="hover">
+            <template #header>
+              <div class="card-header">
+                <el-icon class="card-icon"><DocumentCopy /></el-icon>
+                <span>Clipboard</span>
+              </div>
+            </template>
+            <div class="card-content">
+              <el-input v-model="clipboardText" placeholder="Text to copy" style="margin-bottom: 10px;" />
+              <el-button type="primary" @click="testClipboard">
+                <el-icon><CopyDocument /></el-icon>
+                Copy to Clipboard
+              </el-button>
+            </div>
+          </el-card>
+
+          <el-card class="demo-card" shadow="hover">
+            <template #header>
+              <div class="card-header">
+                <el-icon class="card-icon"><Bell /></el-icon>
+                <span>Notifications</span>
+              </div>
+            </template>
+            <div class="card-content">
+              <el-input v-model="notifTitle" placeholder="Title" style="margin-bottom: 5px;" />
+              <el-input v-model="notifContent" placeholder="Content" style="margin-bottom: 10px;" />
+              <el-button type="primary" @click="testNotification">
+                <el-icon><Bell /></el-icon>
+                Send Notification
+              </el-button>
+            </div>
+          </el-card>
+
+          <el-card class="demo-card" shadow="hover">
+            <template #header>
+              <div class="card-header">
+                <el-icon class="card-icon"><FolderOpened /></el-icon>
+                <span>File Dialogs</span>
+              </div>
+            </template>
+            <div class="card-content">
+              <el-button type="primary" @click="testOpenDialog">
+                <el-icon><FolderOpened /></el-icon>
+                Open File
+              </el-button>
+              <el-button type="success" @click="testSaveDialog">
+                <el-icon><Document /></el-icon>
+                Save File
+              </el-button>
+              <el-button type="warning" @click="testFolderDialog">
+                <el-icon><Folder /></el-icon>
+                Open Folder
+              </el-button>
+            </div>
+          </el-card>
+
+          <el-card class="demo-card" shadow="hover">
+            <template #header>
+              <div class="card-header">
+                <el-icon class="card-icon"><Terminal /></el-icon>
+                <span>Command Execution</span>
+              </div>
+            </template>
+            <div class="card-content">
+              <el-input v-model="commandText" placeholder="Enter command" style="margin-bottom: 10px;" />
+              <el-button type="primary" @click="testExecCommand">
+                <el-icon><VideoPlay /></el-icon>
+                Execute
+              </el-button>
+              <pre v-if="commandOutput" class="output-pre">{{ commandOutput }}</pre>
+            </div>
+          </el-card>
+
+          <el-card class="demo-card" shadow="hover">
+            <template #header>
+              <div class="card-header">
+                <el-icon class="card-icon"><MessageBox /></el-icon>
+                <span>Message Box</span>
+              </div>
+            </template>
+            <div class="card-content">
+              <el-button type="primary" @click="testMessageBox('info')">Info</el-button>
+              <el-button type="success" @click="testMessageBox('question')">Question</el-button>
+              <el-button type="warning" @click="testMessageBox('warn')">Warning</el-button>
+              <el-button type="danger" @click="testMessageBox('error')">Error</el-button>
+            </div>
+          </el-card>
+        </div>
+      </el-tab-pane>
     </el-tabs>
 
     <div v-if="apiOutput" class="output-panel">
@@ -369,7 +550,9 @@ import { ref, onMounted } from 'vue'
 import { ElMessage } from 'element-plus'
 import {
   Monitor, Cpu, Setting, FullScreen, DocumentCopy,
-  FolderOpened, Collection, Menu
+  FolderOpened, Collection, Menu, Refresh, Bell,
+  Operation, Search, CopyDocument, Folder, Document,
+  Promotion, SetUp, MessageBox
 } from '@element-plus/icons-vue'
 import ApiDemo from '@/components/ApiDemo.vue'
 
@@ -421,6 +604,7 @@ const storageValue = ref('testValue')
 const storageGetKey = ref('testKey')
 const storageRemoveKey = ref('testKey')
 const storageResult = ref('')
+const updaterResult = ref('')
 
 const appExitCode = `await Neutralino.app.exit();`
 const appGetConfigCode = `const config = await Neutralino.app.getConfig();
@@ -453,6 +637,14 @@ const windowAlwaysOnTopCode = `await Neutralino.window.setAlwaysOnTop(true);
 await Neutralino.window.setAlwaysOnTop(false);`
 const windowFocusCode = `await Neutralino.window.focus();`
 const windowPrintCode = `await Neutralino.window.print();`
+const windowIsMinimizedCode = `const minimized = await Neutralino.window.isMinimized();`
+const windowIsVisibleCode = `const visible = await Neutralino.window.isVisible();`
+const windowIsFullScreenCode = `const fullscreen = await Neutralino.window.isFullScreen();`
+const windowBorderlessCode = `await Neutralino.window.setBorderless(true);
+await Neutralino.window.setBorderless(false);`
+const windowSetIconCode = `await Neutralino.window.setIcon('/resources/icons/appIcon.png');`
+const windowDraggableCode = `await Neutralino.window.setDraggableRegion('draggable-header');`
+const windowSnapshotCode = `await Neutralino.window.snapshot('./screenshot.png');`
 
 const computerOSInfoCode = `const osInfo = await Neutralino.computer.getOSInfo();
 console.log(\`OS: \${osInfo.name}\`);`
@@ -555,6 +747,19 @@ const setTrayCode = `const tray = {
 };
 await Neutralino.os.setTray(tray);`
 
+const updaterCheckCode = `const update = await Neutralino.updater.checkForUpdate();
+console.log('Update available:', update);`
+const updaterDownloadCode = `await Neutralino.updater.downloadUpdate();`
+const updaterInstallCode = `await Neutralino.updater.install();`
+const updaterStateCode = `const state = await Neutralino.updater.getState();
+console.log('State:', state);`
+
+const eventsOnCode = `Neutralino.app.on('myEvent', (data) => {
+  console.log('Event received:', data);
+});`
+const eventsOffCode = `Neutralino.app.off('myEvent');`
+const eventsBroadcastCode = `await Neutralino.app.broadcast('myEvent', { data: 'Hello' });`
+
 const runAppExit = async () => {
   try { await getNeutralino().app.exit() } catch (e: any) { ElMessage.error(e.message) }
 }
@@ -627,6 +832,27 @@ const runWindowFocus = async () => {
 }
 const runWindowPrint = async () => {
   try { await getNeutralino().window.print() } catch (e: any) { ElMessage.error(e.message) }
+}
+const runWindowIsMinimized = async () => {
+  try { const status = await getNeutralino().window.isMinimized(); windowResult.value = status ? 'Minimized' : 'Not Minimized' } catch (e: any) { ElMessage.error(e.message) }
+}
+const runWindowIsVisible = async () => {
+  try { const status = await getNeutralino().window.isVisible(); windowResult.value = status ? 'Visible' : 'Hidden' } catch (e: any) { ElMessage.error(e.message) }
+}
+const runWindowIsFullScreen = async () => {
+  try { const status = await getNeutralino().window.isFullScreen(); windowResult.value = status ? 'Full Screen' : 'Windowed' } catch (e: any) { ElMessage.error(e.message) }
+}
+const runWindowBorderless = async (borderless: boolean) => {
+  try { await getNeutralino().window.setBorderless(borderless); ElMessage.success(borderless ? 'Borderless mode' : 'Normal mode') } catch (e: any) { ElMessage.error(e.message) }
+}
+const runWindowSetIcon = async () => {
+  try { await getNeutralino().window.setIcon('/resources/icons/appIcon.png'); ElMessage.success('Icon set') } catch (e: any) { ElMessage.error(e.message) }
+}
+const runWindowDraggable = async (elementId: string) => {
+  try { await getNeutralino().window.setDraggableRegion(elementId); ElMessage.success('Draggable region set') } catch (e: any) { ElMessage.error(e.message) }
+}
+const runWindowSnapshot = async () => {
+  try { await getNeutralino().window.snapshot('./screenshot.png'); ElMessage.success('Screenshot saved') } catch (e: any) { ElMessage.error(e.message) }
 }
 
 const runComputerOSInfo = async () => {
@@ -774,6 +1000,81 @@ const runSetTray = async () => {
 }
 const runRemoveTray = async () => {
   try { await getNeutralino().os.setTray({ icon: '', menuItems: [] }); ElMessage.success('Tray removed') } catch (e: any) { ElMessage.error(e.message) }
+}
+
+const runUpdaterCheck = async () => {
+  try { const update = await getNeutralino().updater.checkForUpdates('https://example.com/update.json'); output('Update Check', update) } catch (e: any) { ElMessage.error(e.message) }
+}
+const runUpdaterDownload = async () => {
+  try {
+    ElMessage.info('Updater not configured - add update.json URL to settings')
+  } catch (e: any) { ElMessage.error(e.message) }
+}
+const runUpdaterState = async () => {
+  try { updaterResult.value = 'Updater not configured' } catch (e: any) { ElMessage.error(e.message) }
+}
+
+const runEventsOn = async () => {
+  try {
+    ElMessage.success('Use app.broadcast() to send events, app.on()/off() are not supported in web mode')
+  } catch (e: any) { ElMessage.error(e.message) }
+}
+const runEventsOff = async () => {
+  try { ElMessage.info('Event listener removed (simulated)') } catch (e: any) { ElMessage.error(e.message) }
+}
+const runEventsBroadcast = async () => {
+  try { await getNeutralino().app.broadcast('myEvent', { time: Date.now() }); ElMessage.success('Event broadcasted') } catch (e: any) { ElMessage.error(e.message) }
+}
+
+const loading = ref(false)
+const systemInfo = ref('')
+const commandOutput = ref('')
+
+const getSystemInfo = async () => {
+  loading.value = true
+  try {
+    const [osInfo, cpuInfo, memoryInfo] = await Promise.all([
+      getNeutralino().computer.getOSInfo(),
+      getNeutralino().computer.getCPUInfo(),
+      getNeutralino().computer.getMemoryInfo()
+    ])
+    systemInfo.value = `OS: ${osInfo.name}\nVersion: ${osInfo.version}\nDescription: ${osInfo.description}\nCPU: ${cpuInfo.model}\nMemory: ${(memoryInfo.physical.total / 1024 / 1024 / 1024).toFixed(2)} GB`
+  } catch (e: any) {
+    ElMessage.error(e.message)
+  } finally {
+    loading.value = false
+  }
+}
+
+const testClipboard = async () => {
+  try { await getNeutralino().clipboard.writeText(clipboardText.value); ElMessage.success('Copied!') } catch (e: any) { ElMessage.error(e.message) }
+}
+
+const testNotification = async () => {
+  try { await getNeutralino().os.showNotification(notifTitle.value, notifContent.value) } catch (e: any) { ElMessage.error(e.message) }
+}
+
+const testOpenDialog = async () => {
+  try { const files = await getNeutralino().os.showOpenDialog('Open File', { multiSelections: false }); if (files.length) { output('Selected', files) } } catch (e: any) { ElMessage.error(e.message) }
+}
+const testSaveDialog = async () => {
+  try { const file = await getNeutralino().os.showSaveDialog('Save File'); if (file) { output('Save Path', file) } } catch (e: any) { ElMessage.error(e.message) }
+}
+const testFolderDialog = async () => {
+  try { const folder = await getNeutralino().os.showFolderDialog('Select Folder'); if (folder) { output('Selected Folder', folder) } } catch (e: any) { ElMessage.error(e.message) }
+}
+
+const testExecCommand = async () => {
+  if (!commandText.value.trim()) { ElMessage.warning('Enter a command'); return }
+  try { const result = await getNeutralino().os.execCommand(commandText.value); commandOutput.value = result.output || result.stdOut || JSON.stringify(result) } catch (e: any) { ElMessage.error(e.message) }
+}
+
+const testMessageBox = async (type: string) => {
+  try {
+    const icons: Record<string, string> = { info: 'INFO', question: 'QUESTION', warn: 'WARNING', error: 'ERROR' }
+    const buttons: Record<string, string> = { info: 'OK', question: 'YES_NO', warn: 'OK', error: 'OK' }
+    await getNeutralino().os.showMessageBox(type.charAt(0).toUpperCase() + type.slice(1), `This is a ${type} message`, buttons[type], icons[type])
+  } catch (e: any) { ElMessage.error(e.message) }
 }
 
 onMounted(() => {
