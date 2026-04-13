@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
-import { api } from '../api/client'
+import { locationsApi } from '../api/locations'
 
 export interface Location {
   id?: number
@@ -22,7 +22,7 @@ export const useLocationStore = defineStore('locations', () => {
     loading.value = true
     error.value = null
     try {
-      const response = await api.locations.list()
+      const response = await locationsApi.list()
       locations.value = response.data.data
     } catch (err: any) {
       error.value = err.message
@@ -34,7 +34,7 @@ export const useLocationStore = defineStore('locations', () => {
 
   async function create(location: Omit<Location, 'id' | 'created_at' | 'updated_at'>) {
     try {
-      const response = await api.locations.create(location)
+      const response = await locationsApi.create(location)
       locations.value.unshift(response.data)
       return response.data
     } catch (err: any) {
@@ -45,7 +45,7 @@ export const useLocationStore = defineStore('locations', () => {
 
   async function update(id: number, data: Partial<Location>) {
     try {
-      const response = await api.locations.update(id, data)
+      const response = await locationsApi.update(id, data)
       const index = locations.value.findIndex((l: Location) => l.id === id)
       if (index !== -1) {
         locations.value[index] = response.data
@@ -59,7 +59,7 @@ export const useLocationStore = defineStore('locations', () => {
 
   async function remove(id: number) {
     try {
-      await api.locations.delete(id)
+      await locationsApi.delete(id)
       locations.value = locations.value.filter((l: Location) => l.id !== id)
     } catch (err: any) {
       console.error('[Store] Failed to delete location:', err)

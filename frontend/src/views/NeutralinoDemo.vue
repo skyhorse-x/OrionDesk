@@ -177,7 +177,7 @@ import {
   DocumentCopy, CopyDocument, Document, FolderOpened, Download, ChatLineSquare,
   Warning, QuestionFilled, Edit, Operation, VideoPlay, Upload, Refresh
 } from '@element-plus/icons-vue'
-import { api } from '@/api/client'
+import { systemApi } from '@/api/system'
 
 const loading = ref(false)
 const systemInfo = ref('')
@@ -249,7 +249,7 @@ const getSystemInfo = async () => {
   loading.value = true
   systemInfo.value = ''
   try {
-    const response = await api.system.info()
+    const response = await systemApi.info()
     systemInfo.value = JSON.stringify(response.data, null, 2)
   } catch (error: any) {
     systemInfo.value = `Error: ${error.message}`
@@ -267,7 +267,7 @@ const showNotification = async () => {
   notificationLoading.value = true
   notificationResult.value = ''
   try {
-    const response = await api.system.sendNotification('OrionDesk', notificationText.value)
+    const response = await systemApi.sendNotification('OrionDesk', notificationText.value)
     notificationResult.value = response.data.message || 'Notification sent!'
     notificationResultType.value = 'success'
     ElMessage.success(notificationResult.value)
@@ -333,7 +333,7 @@ const copyToClipboard = async () => {
 
   clipboardLoading.value = true
   try {
-    await api.system.clipboard.write(clipboardText.value)
+    await systemApi.clipboard.write(clipboardText.value)
     clipboardResult.value = 'Copied successfully!'
     clipboardResultType.value = 'success'
   } catch (error: any) {
@@ -348,7 +348,7 @@ const pasteFromClipboard = async () => {
   clipboardLoading.value = true
   clipboardText.value = ''
   try {
-    const response = await api.system.clipboard.read()
+    const response = await systemApi.clipboard.read()
     clipboardText.value = response.data.text || ''
     clipboardResult.value = 'Pasted successfully!'
     clipboardResultType.value = 'success'
@@ -362,7 +362,7 @@ const pasteFromClipboard = async () => {
 
 const openFileDialog = async () => {
   try {
-    const response = await api.system.dialog.open('Open File')
+    const response = await systemApi.dialog.open('Open File')
     if (response.data.success && response.data.path) {
       selectedPath.value = `Selected: ${response.data.path}`
     }
@@ -373,7 +373,7 @@ const openFileDialog = async () => {
 
 const openDirectoryDialog = async () => {
   try {
-    const response = await api.system.dialog.open('Open Directory', true)
+    const response = await systemApi.dialog.open('Open Directory', true)
     if (response.data.success && response.data.path) {
       selectedPath.value = `Selected: ${response.data.path}`
     }
@@ -384,7 +384,7 @@ const openDirectoryDialog = async () => {
 
 const saveFileDialog = async () => {
   try {
-    const response = await api.system.dialog.save('Save File')
+    const response = await systemApi.dialog.save('Save File')
     if (response.data.success && response.data.path) {
       selectedPath.value = `Saved: ${response.data.path}`
     }
@@ -395,7 +395,7 @@ const saveFileDialog = async () => {
 
 const showAlert = async () => {
   try {
-    await api.system.dialog.message('alert', 'Alert', 'This is an alert dialog')
+    await systemApi.dialog.message('alert', 'Alert', 'This is an alert dialog')
   } catch (error: any) {
     console.error(error)
   }
@@ -403,7 +403,7 @@ const showAlert = async () => {
 
 const showConfirm = async () => {
   try {
-    const response = await api.system.dialog.message('confirm', 'Confirm', 'Are you sure?')
+    const response = await systemApi.dialog.message('confirm', 'Confirm', 'Are you sure?')
     dialogResult.value = response.data.cancelled ? 'User clicked Cancel' : 'User clicked OK'
   } catch (error: any) {
     dialogResult.value = `Error: ${error.message}`
@@ -432,7 +432,7 @@ const executeCommand = async () => {
   commandLoading.value = true
   commandOutput.value = ''
   try {
-    const response = await api.system.execCommand(commandText.value)
+    const response = await systemApi.execCommand(commandText.value)
     commandOutput.value = response.data.output || response.data.error || 'Command executed'
   } catch (error: any) {
     commandOutput.value = error.response?.data?.error || error.message

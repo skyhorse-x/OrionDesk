@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
-import { api } from '../api/client'
+import { settingsApi } from '../api/settings'
 
 export interface Setting {
   key: string
@@ -37,7 +37,7 @@ export const useSettingStore = defineStore('settings', () => {
     loading.value = true
     error.value = null
     try {
-      const response = await api.settings.list()
+      const response = await settingsApi.list()
       const settingsMap: Record<string, Setting> = {}
       for (const s of response.data.data) {
         settingsMap[s.key] = s
@@ -53,7 +53,7 @@ export const useSettingStore = defineStore('settings', () => {
 
   async function fetchByPrefix(prefix: string) {
     try {
-      const response = await api.settings.getByPrefix(prefix)
+      const response = await settingsApi.getByPrefix(prefix)
       for (const s of response.data.data) {
         settings.value[s.key] = s
       }
@@ -65,7 +65,7 @@ export const useSettingStore = defineStore('settings', () => {
 
   async function update(key: string, value: string) {
     try {
-      const response = await api.settings.update(key, value)
+      const response = await settingsApi.update(key, value)
       settings.value[key] = response.data
       return response.data
     } catch (err: any) {

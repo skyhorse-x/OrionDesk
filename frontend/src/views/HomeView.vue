@@ -59,7 +59,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { MagicStick, FolderOpened, Bell } from '@element-plus/icons-vue'
-import { api } from '@/api/client'
+import { systemApi } from '@/api/system'
 
 const directoryPath = ref('')
 const loading = ref(false)
@@ -86,7 +86,7 @@ const openDirectory = async () => {
   message.value = ''
 
   try {
-    const response = await api.system.openDirectory(directoryPath.value)
+    const response = await systemApi.openDirectory(directoryPath.value)
     message.value = response.data.message
     messageType.value = 'success'
   } catch (error: any) {
@@ -108,7 +108,7 @@ const sendNotification = async () => {
   notificationMessageResult.value = ''
 
   try {
-    const response = await api.system.sendNotification('OrionDesk', notificationMessage.value)
+    const response = await systemApi.sendNotification('OrionDesk', notificationMessage.value)
     notificationMessageResult.value = response.data.message || 'Notification sent successfully!'
     messageType.value = 'success'
   } catch (error: any) {

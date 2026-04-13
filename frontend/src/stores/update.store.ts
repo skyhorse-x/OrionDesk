@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
-import { api } from '../api/client'
+import { systemApi } from '../api/system'
 
 export interface UpdateInfo {
   version: string
@@ -21,7 +21,7 @@ export const useUpdateStore = defineStore('update', () => {
     error.value = null
 
     try {
-      const response = await api.system.info()
+      const response = await systemApi.info()
       const currentVersion = response.data.version || '1.0.0'
 
       updateInfo.value = {
