@@ -5,39 +5,39 @@
 [![Frontend](https://img.shields.io/badge/frontend-Vue%203-4FC08D)](https://vuejs.org/)
 [![Backend](https://img.shields.io/badge/backend-Bun%20%2B%20Hono-FF6B6B)](https://bun.sh/)
 
-[English](./README.en.md) | 中文
+English | [中文](./README.zh.md)
 
-> 🖥️ 现代化轻量级跨平台桌面应用模板 - 基于 Neutralino.js + Vue 3 + Bun
+> 🖥️ Modern Lightweight Cross-Platform Desktop Application Template - Built with Neutralino.js + Vue 3 + Bun
 
-## ✨ 特性
+## ✨ Features
 
-- **🚀 轻量高效**：Neutralino.js 比 Electron 小 40 倍，启动速度快
-- **🔧 易于定制**：清晰的模块化架构，快速开发自定义功能
-- **💾 数据持久化**：内置 SQLite 数据库，开箱即用
-- **🎨 现代前端**：Vue 3 + TypeScript + Element Plus
-- **🌐 国际化**：内置 Vue I18n 多语言支持
-- **📦 自动更新**：预留自动更新架构
+- **🚀 Lightweight & Fast**: Neutralino.js is 40x smaller than Electron, with faster startup
+- **🔧 Easy to Customize**: Clean modular architecture for rapid feature development
+- **💾 Data Persistence**: Built-in SQLite database, ready to use
+- **🎨 Modern Frontend**: Vue 3 + TypeScript + Element Plus
+- **🌐 Internationalization**: Built-in Vue I18n multi-language support
+- **📦 Auto-Update**: Pre-architected for automatic updates
 
-## 📚 技术栈
+## 📚 Tech Stack
 
-| 层级 | 技术 | 说明 |
-|------|------|------|
-| 桌面壳 | [Neutralino.js](https://neutralino.js.org/) | 轻量级跨平台桌面应用框架 |
-| 前端框架 | Vue 3 + TypeScript | 组合式 API (Composition API) |
-| 构建工具 | Vite 7 | 快速开发体验 |
-| 状态管理 | Pinia | Vue 3 官方推荐状态管理 |
-| 后端框架 | Bun + Hono | 高性能 JavaScript 运行时 + Web 框架 |
-| 数据库 | SQLite | 零配置嵌入式数据库 |
-| UI 组件 | Element Plus | Vue 3 组件库 |
-| 国际化 | Vue I18n | 完整的国际化解决方案 |
+| Layer | Technology | Description |
+|-------|------------|-------------|
+| Desktop Shell | [Neutralino.js](https://neutralino.js.org/) | Lightweight cross-platform desktop framework |
+| Frontend | Vue 3 + TypeScript | Composition API |
+| Build Tool | Vite 7 | Fast development experience |
+| State Management | Pinia | Official Vue 3 state management |
+| Backend | Bun + Hono | High-performance JS runtime + Web framework |
+| Database | SQLite | Zero-config embedded database |
+| UI Components | Element Plus | Vue 3 component library |
+| i18n | Vue I18n | Complete internationalization solution |
 
-## 🗂️ 架构图
+## 🗂️ Architecture
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│                     OrionDesk 桌面应用                        │
+│                     OrionDesk Desktop App                    │
 │  ┌─────────────────────────────────────────────────────┐   │
-│  │                   Vue 3 前端                         │   │
+│  │                   Vue 3 Frontend                     │   │
 │  │  ┌─────────┐  ┌─────────┐  ┌───────────────────┐  │   │
 │  │  │ Router  │  │ Pinia   │  │  Element Plus UI  │  │   │
 │  │  └─────────┘  └─────────┘  └───────────────────┘  │   │
@@ -46,7 +46,7 @@
 │                            │ HTTP / WebSocket              │
 │                            ▼                               │
 │  ┌─────────────────────────────────────────────────────┐   │
-│  │               Bun + Hono 后端服务                     │   │
+│  │               Bun + Hono Backend Service             │   │
 │  │  ┌─────────┐  ┌─────────┐  ┌───────────────────┐  │   │
 │  │  │ Routes  │  │Services │  │   SQLite DB       │  │   │
 │  │  └─────────┘  └─────────┘  └───────────────────┘  │   │
@@ -55,131 +55,134 @@
 │                            │ IPC                           │
 │                            ▼                               │
 │  ┌─────────────────────────────────────────────────────┐   │
-│  │              Neutralino.js 原生桥接                   │   │
-│  │   (窗口控制 / 文件系统 / 剪贴板 / 系统通知 / 硬件信息)  │   │
+│  │              Neutralino.js Native Bridge             │   │
+│  │  (Window / Filesystem / Clipboard / Notifications)   │   │
 │  └─────────────────────────────────────────────────────┘   │
 └─────────────────────────────────────────────────────────────┘
 ```
 
-## 🚀 快速开始
+## 🚀 Getting Started
 
-### 环境要求
+### Requirements
 
-- **Bun** >= 1.0 (推荐)
-- **Node.js** >= 18 (备用)
-- **Neutralino CLI** (自动安装)
+- **Bun** >= 1.0
+- **Node.js** >= 18 (for installing Neutralino CLI)
+- **Neutralino CLI**: `npm install -g @neutralinojs/neu`
 
-### 安装步骤
+### Installation
 
 ```bash
-# 1. 克隆项目
+# 1. Install Neutralino CLI (global, first time only)
+npm install -g @neutralinojs/neu
+
+# 2. Clone the repository
 git clone https://github.com/your-username/OrionDesk.git
 cd OrionDesk
 
-# 2. 安装依赖
+# 3. Install dependencies
 bun install
 
-# 3. 启动开发模式
+# 4. Start development mode
 neu run
 ```
 
-### 开发命令
+### Development Commands
 
-| 命令 | 说明 |
-|------|------|
-| `neu run` | 启动桌面应用开发模式 |
-| `neu build` | 构建桌面应用安装包 |
+| Command | Description |
+|---------|-------------|
+| `neu run` | Start desktop app in development mode |
+| `neu build` | Build desktop app installer |
 
-## 📁 项目结构
+## 📁 Project Structure
 
 ```
 OrionDesk/
-├── frontend/                    # Vue 3 前端应用
+├── frontend/                    # Vue 3 Frontend
 │   └── src/
-│       ├── api/                 # API 客户端（按领域拆分）
-│       │   ├── health.ts        # 健康检查 API
-│       │   ├── system.ts        # 系统信息 API
-│       │   ├── locations.ts     # 位置管理 API
-│       │   └── settings.ts      # 设置管理 API
-│       ├── utils/               # 工具函数
-│       │   └── request.ts       # Axios 统一请求封装
-│       ├── components/          # 可复用组件
-│       │   ├── TitleBar.vue     # 自定义标题栏
-│       │   └── ApiDemo.vue      # API 演示组件
-│       ├── stores/              # Pinia 状态管理
-│       │   ├── index.ts         # Store 导出
-│       │   ├── location.store.ts# 位置管理
-│       │   ├── setting.store.ts # 设置管理
-│       │   └── update.store.ts  # 更新检查
-│       ├── views/               # 页面组件
-│       │   ├── HomeView.vue     # 首页
-│       │   ├── SettingsView.vue # 设置页
-│       │   ├── ApiDemoView.vue  # API 演示页
-│       │   ├── DocView.vue      # 文档页
-│       │   ├── NeutralinoDemo.vue # Neutralino API 演示
-│       │   └── WindowControl.vue  # 窗口控制
-│       ├── router/              # 路由配置
-│       ├── i18n/                # 国际化配置
-│       ├── App.vue              # 根组件
-│       └── main.ts              # 入口文件
+│       ├── api/                 # API clients (domain-split)
+│       │   ├── health.ts        # Health check API
+│       │   ├── system.ts        # System info API
+│       │   ├── locations.ts     # Location management API
+│       │   └── settings.ts      # Settings management API
+│       ├── utils/               # Utilities
+│       │   └── request.ts       # Axios request wrapper
+│       ├── components/          # Reusable components
+│       │   ├── TitleBar.vue     # Custom title bar
+│       │   └── ApiDemo.vue      # API demo component
+│       ├── stores/              # Pinia stores
+│       │   ├── index.ts         # Store exports
+│       │   ├── location.store.ts# Location management
+│       │   ├── setting.store.ts # Settings management
+│       │   └── update.store.ts  # Update checker
+│       ├── views/               # Page components
+│       │   ├── HomeView.vue     # Home page
+│       │   ├── SettingsView.vue # Settings page
+│       │   ├── ApiDemoView.vue  # API demo page
+│       │   ├── DocView.vue      # Documentation page
+│       │   ├── NeutralinoDemo.vue # Neutralino API demo
+│       │   └── WindowControl.vue  # Window control demo
+│       ├── router/              # Router config
+│       ├── i18n/                # i18n config
+│       ├── App.vue              # Root component
+│       └── main.ts              # Entry file
 │
-├── server/                      # Bun + Hono 后端
-│   ├── main.ts                  # 后端入口
+├── server/                      # Bun + Hono Backend
+│   ├── main.ts                  # Backend entry
 │   ├── core/
-│   │   ├── bootstrap.ts         # 启动引导
-│   │   └── server.ts            # Hono 服务器
-│   ├── routes/                  # API 路由
-│   │   ├── health.routes.ts     # 健康检查
-│   │   ├── system.routes.ts     # 系统信息
-│   │   ├── locations.routes.ts  # 位置管理
-│   │   └── settings.routes.ts   # 设置管理
-│   ├── services/                # 业务服务
-│   │   ├── logger.service.ts    # 日志服务
-│   │   ├── database.service.ts  # 数据库服务
-│   │   ├── migration.service.ts # 数据迁移
-│   │   ├── location.service.ts  # 位置 CRUD
-│   │   └── setting.service.ts   # 设置 CRUD
-│   └── shared/                  # 共享类型与工具
+│   │   ├── bootstrap.ts         # Bootstrap
+│   │   └── server.ts            # Hono server
+│   ├── routes/                  # API routes
+│   │   ├── health.routes.ts     # Health check
+│   │   ├── system.routes.ts     # System info
+│   │   ├── locations.routes.ts  # Location management
+│   │   └── settings.routes.ts   # Settings management
+│   ├── services/                # Business services
+│   │   ├── logger.service.ts    # Logging
+│   │   ├── database.service.ts  # Database
+│   │   ├── migration.service.ts # Migrations
+│   │   ├── location.service.ts  # Location CRUD
+│   │   └── setting.service.ts   # Settings CRUD
+│   └── shared/                  # Shared types & utilities
 │       └── types/
-│           └── api.types.ts     # API 类型定义
+│           └── api.types.ts     # API type definitions
 │
-├── resources/                   # Neutralino 资源目录
-├── data/                        # SQLite 数据存储
-├── neutralino.config.json       # Neutralino 配置
-└── package.json                 # 项目配置
+├── resources/                   # Neutralino resources
+├── data/                        # SQLite data storage
+├── neutralino.config.json       # Neutralino config
+└── package.json                 # Project config
 ```
 
-## 🎨 自定义开发
+## 🎨 Customization
 
-### 1. 修改应用名称
+### 1. Change App Name
 
 ```typescript
 // frontend/src/App.vue
-<h2>你的应用名称</h2>
+<h2>Your App Name</h2>
 
 // neutralino.config.json
 {
-  "appname": "你的应用名称"
+  "appname": "Your App Name"
 }
 ```
 
-### 2. 添加新页面
+### 2. Add New Page
 
-**步骤 1**：创建视图组件 `frontend/src/views/MyPage.vue`
+**Step 1**: Create view component `frontend/src/views/MyPage.vue`
 
 ```vue
 <template>
   <div class="my-page">
-    <h1>我的自定义页面</h1>
+    <h1>My Custom Page</h1>
   </div>
 </template>
 
 <script setup lang="ts">
-// 业务逻辑
+// Business logic
 </script>
 ```
 
-**步骤 2**：注册路由 `frontend/src/router/index.ts`
+**Step 2**: Register route `frontend/src/router/index.ts`
 
 ```typescript
 {
@@ -189,9 +192,9 @@ OrionDesk/
 }
 ```
 
-### 3. 添加新 API
+### 3. Add New API
 
-**步骤 1**：创建服务 `server/services/my.service.ts`
+**Step 1**: Create service `server/services/my.service.ts`
 
 ```typescript
 import { db } from './database.service'
@@ -201,7 +204,7 @@ export function getMyData() {
 }
 ```
 
-**步骤 2**：创建路由 `server/routes/my.routes.ts`
+**Step 2**: Create route `server/routes/my.routes.ts`
 
 ```typescript
 import { Hono } from 'hono'
@@ -215,7 +218,7 @@ myRoutes.get('/data', (c) => {
 })
 ```
 
-**步骤 3**：注册路由 `server/core/server.ts`
+**Step 3**: Register route `server/core/server.ts`
 
 ```typescript
 import { myRoutes } from '../routes/my.routes'
@@ -223,7 +226,7 @@ import { myRoutes } from '../routes/my.routes'
 app.route('/api/my', myRoutes)
 ```
 
-**步骤 4**：创建前端 API 模块 `frontend/src/api/my.ts`
+**Step 4**: Create frontend API module `frontend/src/api/my.ts`
 
 ```typescript
 import { get } from '@/utils/request'
@@ -233,9 +236,9 @@ export const myApi = {
 }
 ```
 
-### 4. 添加新 Store
+### 4. Add New Store
 
-创建 `frontend/src/stores/my.store.ts`
+Create `frontend/src/stores/my.store.ts`
 
 ```typescript
 import { defineStore } from 'pinia'
@@ -245,83 +248,83 @@ export const useMyStore = defineStore('my', () => {
   const data = ref<any[]>([])
 
   async function fetchData() {
-    // 调用 API
+    // Call API
   }
 
   return { data, fetchData }
 })
 ```
 
-## 🔌 Neutralino API 使用
+## 🔌 Neutralino API
 
-项目内置 Neutralino.js API 支持：
+Built-in Neutralino.js API support:
 
 ```typescript
-// 窗口控制
+// Window control
 await Neutralino.window.minimize()
 await Neutralino.window.maximize()
 await Neutralino.window.restore()
 
-// 文件对话框
-const file = await Neutralino.os.showOpenDialog('选择文件')
-const folder = await Neutralino.os.showFolderDialog('选择文件夹')
+// File dialogs
+const file = await Neutralino.os.showOpenDialog('Select file')
+const folder = await Neutralino.os.showFolderDialog('Select folder')
 
-// 系统通知
-await Neutralino.os.showNotification('标题', '内容')
+// Notifications
+await Neutralino.os.showNotification('Title', 'Content')
 
-// 剪贴板
-await Neutralino.clipboard.writeText('文本')
+// Clipboard
+await Neutralino.clipboard.writeText('Text')
 const text = await Neutralino.clipboard.readText()
 
-// 系统信息
+// System info
 const osInfo = await Neutralino.computer.getOSInfo()
 const memory = await Neutralino.computer.getMemoryInfo()
 
-// 应用控制
+// App control
 await Neutralino.app.exit()
 ```
 
-详见 `frontend/src/views/NeutralinoDemo.vue` 完整演示。
+See `frontend/src/views/NeutralinoDemo.vue` for the complete demo.
 
-## 🌐 API 文档
+## 🌐 API Documentation
 
-### 系统接口
+### System
 
-| 方法 | 路径 | 说明 |
-|------|------|------|
-| GET | `/api/system/info` | 获取系统信息 |
-| POST | `/api/system/open-directory` | 打开目录 |
+| Method | Path | Description |
+|--------|------|-------------|
+| GET | `/api/system/info` | Get system info |
+| POST | `/api/system/open-directory` | Open directory |
 
-### 位置管理
+### Location Management
 
-| 方法 | 路径 | 说明 |
-|------|------|------|
-| GET | `/api/locations` | 获取所有位置 |
-| GET | `/api/locations/:id` | 获取单个位置 |
-| POST | `/api/locations` | 创建位置 |
-| PUT | `/api/locations/:id` | 更新位置 |
-| DELETE | `/api/locations/:id` | 删除位置 |
+| Method | Path | Description |
+|--------|------|-------------|
+| GET | `/api/locations` | Get all locations |
+| GET | `/api/locations/:id` | Get location by ID |
+| POST | `/api/locations` | Create location |
+| PUT | `/api/locations/:id` | Update location |
+| DELETE | `/api/locations/:id` | Delete location |
 
-### 设置管理
+### Settings Management
 
-| 方法 | 路径 | 说明 |
-|------|------|------|
-| GET | `/api/settings` | 获取所有设置 |
-| GET | `/api/settings/:key` | 获取指定设置 |
-| PUT | `/api/settings/:key` | 更新设置 |
+| Method | Path | Description |
+|--------|------|-------------|
+| GET | `/api/settings` | Get all settings |
+| GET | `/api/settings/:key` | Get setting by key |
+| PUT | `/api/settings/:key` | Update setting |
 
-### 默认设置
+### Default Settings
 
-| Key | 默认值 | 说明 |
-|-----|--------|------|
-| `app.theme` | `light` | 主题 |
-| `app.language` | `zh-CN` | 语言 |
-| `app.window.customTitleBar` | `false` | 自定义标题栏 |
-| `locations.showHidden` | `false` | 显示隐藏文件 |
+| Key | Default | Description |
+|-----|---------|-------------|
+| `app.theme` | `light` | Theme |
+| `app.language` | `zh-CN` | Language |
+| `app.window.customTitleBar` | `false` | Custom title bar |
+| `locations.showHidden` | `false` | Show hidden files |
 
-## 🔧 环境配置
+## 🔧 Environment Configuration
 
-后端配置通过 `server/.env` 文件管理：
+Backend configuration is managed via `server/.env`:
 
 ```env
 PORT=17870
@@ -329,40 +332,40 @@ HOST=127.0.0.1
 NODE_ENV=development
 ```
 
-> 数据库文件默认存储在项目根目录的 `data/` 目录下。
+> The database file is stored in the `data/` directory at the project root.
 
-## 📦 构建发布
+## 📦 Build & Release
 
 ```bash
-# 构建桌面应用安装包
+# Build desktop app installer
 neu build
 
-# 构建产物位于 dist/ 目录
+# Output in dist/
 ```
 
-支持的平台：
+Supported platforms:
 - Windows (x64)
 - macOS (x64, ARM64)
 - Linux (x64, ARM64)
 
-## 🤝 贡献
+## 🤝 Contributing
 
-欢迎提交 Issue 和 Pull Request！
+Issues and Pull Requests are welcome!
 
-1. Fork 本仓库
-2. 创建特性分支 (`git checkout -b feature/AmazingFeature`)
-3. 提交更改 (`git commit -m 'Add some AmazingFeature'`)
-4. 推送到分支 (`git push origin feature/AmazingFeature`)
-5. 创建 Pull Request
+1. Fork the repository
+2. Create feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to branch (`git push origin feature/AmazingFeature`)
+5. Create Pull Request
 
-## 📄 许可证
+## 📄 License
 
-本项目基于 [MIT License](LICENSE) 开源。
+This project is licensed under [MIT License](LICENSE).
 
-## 🙏 致谢
+## 🙏 Acknowledgments
 
-- [Neutralino.js](https://neutralino.js.org/) - 轻量级桌面应用框架
-- [Vue.js](https://vuejs.org/) - 渐进式 JavaScript 框架
-- [Bun](https://bun.sh/) - JavaScript 运行时和工具链
-- [Element Plus](https://element-plus.org/) - Vue 3 UI 组件库
-- [Hono](https://hono.dev/) - 轻量级 Web 框架
+- [Neutralino.js](https://neutralino.js.org/) - Lightweight desktop app framework
+- [Vue.js](https://vuejs.org/) - Progressive JavaScript framework
+- [Bun](https://bun.sh/) - JavaScript runtime and toolkit
+- [Element Plus](https://element-plus.org/) - Vue 3 component library
+- [Hono](https://hono.dev/) - Lightweight web framework
