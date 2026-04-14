@@ -29,21 +29,13 @@
             <el-icon><HomeFilled /></el-icon>
             <template #title>{{ t('nav.home') }}</template>
           </el-menu-item>
-          <el-menu-item index="/doc">
-            <el-icon><Document /></el-icon>
-            <template #title>{{ t('nav.doc') }}</template>
-          </el-menu-item>
-          <el-menu-item index="/neutralino-demo">
-            <el-icon><Cpu /></el-icon>
-            <template #title>{{ t('nav.neutralino') }}</template>
-          </el-menu-item>
-          <el-menu-item index="/api-demo">
+          <el-menu-item index="/api">
             <el-icon><Tickets /></el-icon>
-            <template #title>API Demo</template>
+            <template #title>API</template>
           </el-menu-item>
-          <el-menu-item index="/window-control">
-            <el-icon><FullScreen /></el-icon>
-            <template #title>{{ t('nav.windowControl') }}</template>
+          <el-menu-item index="/data-table">
+            <el-icon><Grid /></el-icon>
+            <template #title>{{ t('nav.dataTable') }}</template>
           </el-menu-item>
           <el-menu-item index="/settings">
             <el-icon><Setting /></el-icon>
@@ -67,7 +59,7 @@
 import { computed, onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
-import { Fold, Expand, HomeFilled, Cpu, FullScreen, Setting, Grid, Document, Tickets } from '@element-plus/icons-vue'
+import { Fold, Expand, HomeFilled, Setting, Grid, Tickets } from '@element-plus/icons-vue'
 import TitleBar from '@/components/TitleBar.vue'
 import { useSettingStore } from '@/stores'
 
@@ -83,9 +75,8 @@ const currentRoute = computed(() => router.currentRoute.value.path)
 const pageTitle = computed(() => {
   const titles: Record<string, string> = {
     '/': t('nav.home'),
-    '/doc': t('nav.doc'),
-    '/neutralino-demo': t('nav.neutralino'),
-    '/window-control': t('nav.windowControl'),
+    '/api': 'API',
+    '/data-table': t('nav.dataTable'),
     '/settings': t('nav.settings')
   }
   return titles[currentRoute.value] || 'OrionDesk'
@@ -193,12 +184,13 @@ onMounted(async () => {
 
 .sidebar-menu.el-menu--collapse ::v-deep(.el-menu-item) {
   padding: 0 !important;
+  margin: 4px 0;
+  width: 64px;
   justify-content: center;
 }
 
 .sidebar-menu ::v-deep(.el-menu-item:hover) {
-  background: rgba(255, 255, 255, 0.05);
-  color: white;
+  background: transparent;
 }
 
 .sidebar-menu ::v-deep(.el-menu-item.is-active) {
@@ -234,12 +226,12 @@ onMounted(async () => {
   padding-top: 16px;
 }
 
-.sidebar-collapsed .sidebar-header {
+.sidebar.is-collapsed .sidebar-header {
   justify-content: center;
   padding: 16px 8px;
 }
 
-.sidebar-collapsed .collapse-btn {
+.sidebar.is-collapsed .collapse-btn {
   margin: 0;
 }
 </style>

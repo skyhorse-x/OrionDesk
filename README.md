@@ -115,12 +115,10 @@ OrionDesk/
 │       │   ├── setting.store.ts # Settings management
 │       │   └── update.store.ts  # Update checker
 │       ├── views/               # Page components
-│       │   ├── HomeView.vue     # Home page
-│       │   ├── SettingsView.vue # Settings page
+│       │   ├── HomeView.vue     # Home page (with demo)
 │       │   ├── ApiDemoView.vue  # API demo page
-│       │   ├── DocView.vue      # Documentation page
-│       │   ├── NeutralinoDemo.vue # Neutralino API demo
-│       │   └── WindowControl.vue  # Window control demo
+│       │   ├── DataTableView.vue # Data table page
+│       │   └── SettingsView.vue # Settings page
 │       ├── router/              # Router config
 │       ├── i18n/                # i18n config
 │       ├── App.vue              # Root component

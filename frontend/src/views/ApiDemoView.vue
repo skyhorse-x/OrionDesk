@@ -1,8 +1,8 @@
 <template>
   <div class="api-demo">
     <div class="demo-header">
-      <h2>Neutralino.js Native API</h2>
-      <p>Complete API Reference with Copyable Code</p>
+      <h2>{{ t('api.title') }}</h2>
+      <p>{{ t('api.subtitle') }}</p>
     </div>
 
     <el-tabs v-model="activeCategory" class="api-tabs">
@@ -423,22 +423,22 @@
         </div>
       </el-tab-pane>
 
-      <el-tab-pane label="Practice" name="practice">
+      <el-tab-pane :label="t('api.practice')" name="practice">
         <template #label>
-          <span class="tab-label"><el-icon><Operation /></el-icon> Practice</span>
+          <span class="tab-label"><el-icon><Operation /></el-icon> {{ t('api.practice') }}</span>
         </template>
         <div class="api-section practice-grid">
           <el-card class="demo-card" shadow="hover">
             <template #header>
               <div class="card-header">
                 <el-icon class="card-icon"><Monitor /></el-icon>
-                <span>System Information</span>
+                <span>{{ t('api.systemInfo') }}</span>
               </div>
             </template>
             <div class="card-content">
               <el-button type="primary" @click="getSystemInfo" :loading="loading">
                 <el-icon><Search /></el-icon>
-                Get System Info
+                {{ t('api.systemInfo') }}
               </el-button>
               <pre v-if="systemInfo" class="output-pre">{{ systemInfo }}</pre>
             </div>
@@ -448,14 +448,14 @@
             <template #header>
               <div class="card-header">
                 <el-icon class="card-icon"><DocumentCopy /></el-icon>
-                <span>Clipboard</span>
+                <span>{{ t('api.clipboard') }}</span>
               </div>
             </template>
             <div class="card-content">
-              <el-input v-model="clipboardText" placeholder="Text to copy" style="margin-bottom: 10px;" />
+              <el-input v-model="clipboardText" :placeholder="t('home.enterToCopy')" style="margin-bottom: 10px;" />
               <el-button type="primary" @click="testClipboard">
                 <el-icon><CopyDocument /></el-icon>
-                Copy to Clipboard
+                {{ t('home.copy') }}
               </el-button>
             </div>
           </el-card>
@@ -464,15 +464,15 @@
             <template #header>
               <div class="card-header">
                 <el-icon class="card-icon"><Bell /></el-icon>
-                <span>Notifications</span>
+                <span>{{ t('api.notifications') }}</span>
               </div>
             </template>
             <div class="card-content">
-              <el-input v-model="notifTitle" placeholder="Title" style="margin-bottom: 5px;" />
+              <el-input v-model="notifTitle" :placeholder="t('home.enterNotification')" style="margin-bottom: 5px;" />
               <el-input v-model="notifContent" placeholder="Content" style="margin-bottom: 10px;" />
               <el-button type="primary" @click="testNotification">
                 <el-icon><Bell /></el-icon>
-                Send Notification
+                {{ t('home.send') }}
               </el-button>
             </div>
           </el-card>
@@ -481,21 +481,21 @@
             <template #header>
               <div class="card-header">
                 <el-icon class="card-icon"><FolderOpened /></el-icon>
-                <span>File Dialogs</span>
+                <span>{{ t('api.fileDialogs') }}</span>
               </div>
             </template>
             <div class="card-content">
               <el-button type="primary" @click="testOpenDialog">
                 <el-icon><FolderOpened /></el-icon>
-                Open File
+                {{ t('home.openFile') }}
               </el-button>
               <el-button type="success" @click="testSaveDialog">
                 <el-icon><Document /></el-icon>
-                Save File
+                {{ t('home.saveFile') }}
               </el-button>
               <el-button type="warning" @click="testFolderDialog">
                 <el-icon><Folder /></el-icon>
-                Open Folder
+                {{ t('home.openFolder') }}
               </el-button>
             </div>
           </el-card>
@@ -504,14 +504,14 @@
             <template #header>
               <div class="card-header">
                 <el-icon class="card-icon"><Terminal /></el-icon>
-                <span>Command Execution</span>
+                <span>{{ t('api.commandExecution') }}</span>
               </div>
             </template>
             <div class="card-content">
-              <el-input v-model="commandText" placeholder="Enter command" style="margin-bottom: 10px;" />
+              <el-input v-model="commandText" :placeholder="t('home.enterCommand')" style="margin-bottom: 10px;" />
               <el-button type="primary" @click="testExecCommand">
                 <el-icon><VideoPlay /></el-icon>
-                Execute
+                {{ t('home.execute') }}
               </el-button>
               <pre v-if="commandOutput" class="output-pre">{{ commandOutput }}</pre>
             </div>
@@ -521,12 +521,12 @@
             <template #header>
               <div class="card-header">
                 <el-icon class="card-icon"><MessageBox /></el-icon>
-                <span>Message Box</span>
+                <span>{{ t('api.messageBox') }}</span>
               </div>
             </template>
             <div class="card-content">
-              <el-button type="primary" @click="testMessageBox('info')">Info</el-button>
-              <el-button type="success" @click="testMessageBox('question')">Question</el-button>
+              <el-button type="primary" @click="testMessageBox('info')">{{ t('home.alert') }}</el-button>
+              <el-button type="success" @click="testMessageBox('question')">{{ t('home.confirm') }}</el-button>
               <el-button type="warning" @click="testMessageBox('warn')">Warning</el-button>
               <el-button type="danger" @click="testMessageBox('error')">Error</el-button>
             </div>
@@ -537,8 +537,8 @@
 
     <div v-if="apiOutput" class="output-panel">
       <div class="output-header">
-        <span>Output</span>
-        <el-button size="small" @click="apiOutput = ''">Clear</el-button>
+        <span>{{ t('api.output') }}</span>
+        <el-button size="small" @click="apiOutput = ''">{{ t('api.clear') }}</el-button>
       </div>
       <pre>{{ apiOutput }}</pre>
     </div>
@@ -548,6 +548,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { ElMessage } from 'element-plus'
+import { useI18n } from 'vue-i18n'
 import {
   Monitor, Cpu, Setting, FullScreen, DocumentCopy,
   FolderOpened, Collection, Menu, Refresh, Bell,
@@ -555,6 +556,8 @@ import {
   Promotion, SetUp, MessageBox
 } from '@element-plus/icons-vue'
 import ApiDemo from '@/components/ApiDemo.vue'
+
+const { t } = useI18n()
 
 const activeCategory = ref('app')
 const apiOutput = ref('')

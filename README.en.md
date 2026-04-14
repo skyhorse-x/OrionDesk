@@ -5,7 +5,7 @@
 [![Frontend](https://img.shields.io/badge/frontend-Vue%203-4FC08D)](https://vuejs.org/)
 [![Backend](https://img.shields.io/badge/backend-Bun%20%2B%20Hono-FF6B6B)](https://bun.sh/)
 
-English | [中文](./README.md)
+English | [中文](./README.zh.md)
 
 > 🖥️ Modern Lightweight Cross-Platform Desktop Application Template - Built with Neutralino.js + Vue 3 + Bun
 
@@ -107,10 +107,10 @@ OrionDesk/
 │       │   ├── setting.store.ts  # Settings management
 │       │   └── update.store.ts   # Update checker
 │       ├── views/                # Page components
-│       │   ├── HomeView.vue      # Home page
-│       │   ├── SettingsView.vue   # Settings page
-│       │   ├── NeutralinoDemo.vue # Feature demo
-│       │   └── WindowControl.vue  # Window control demo
+│       │   ├── HomeView.vue      # Home page (with demo)
+│       │   ├── ApiDemoView.vue    # API demo
+│       │   ├── DataTableView.vue  # Data table page
+│       │   └── SettingsView.vue   # Settings page
 │       ├── router/               # Router config
 │       ├── i18n/                 # i18n config
 │       ├── App.vue               # Root component

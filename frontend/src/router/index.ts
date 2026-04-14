@@ -7,29 +7,19 @@ const routes = [
     component: () => import("@/views/HomeView.vue")
   },
   {
-    path: "/doc",
-    name: "Doc",
-    component: () => import("@/views/DocView.vue")
+    path: "/api",
+    name: "Api",
+    component: () => import("@/views/ApiDemoView.vue")
+  },
+  {
+    path: "/data-table",
+    name: "DataTable",
+    component: () => import("@/views/DataTableView.vue")
   },
   {
     path: "/settings",
     name: "Settings",
     component: () => import("@/views/SettingsView.vue")
-  },
-  {
-    path: "/neutralino-demo",
-    name: "NeutralinoDemo",
-    component: () => import("@/views/NeutralinoDemo.vue")
-  },
-  {
-    path: "/window-control",
-    name: "WindowControl",
-    component: () => import("@/views/WindowControl.vue")
-  },
-  {
-    path: "/api-demo",
-    name: "ApiDemo",
-    component: () => import("@/views/ApiDemoView.vue")
   }
 ]
 

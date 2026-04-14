@@ -4,11 +4,11 @@
       <template #header>
         <div class="card-header">
           <span class="card-icon">⚙️</span>
-          <span>Application Settings</span>
+          <span>{{ t('settings.title') }}</span>
         </div>
       </template>
       <el-form :model="settings" label-width="140px" class="settings-form">
-        <el-form-item label="Language">
+        <el-form-item :label="t('settings.language')">
           <el-select v-model="settings.language" class="settings-select">
             <el-option label="English" value="en" />
             <el-option label="中文" value="zh" />
@@ -17,7 +17,7 @@
         <el-form-item>
           <el-button type="primary" @click="saveSettings">
             <span class="btn-icon">💾</span>
-            Save Settings
+            {{ t('settings.save') }}
           </el-button>
         </el-form-item>
       </el-form>
@@ -38,7 +38,7 @@ const settings = ref({
 
 const saveSettings = () => {
   locale.value = settings.value.language
-  ElMessage.success('Settings saved')
+  ElMessage.success(t('settings.saved'))
 }
 </script>
 
