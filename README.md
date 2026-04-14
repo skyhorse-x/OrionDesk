@@ -87,9 +87,8 @@ neu run
 
 | 命令 | 说明 |
 |------|------|
-| `neu run` | 启动桌面应用开发模式（前后端自动启动） |
+| `neu run` | 启动桌面应用开发模式 |
 | `neu build` | 构建桌面应用安装包 |
-| `bun run frontend:build` | 构建前端静态资源 |
 
 ## 📁 项目结构
 
@@ -97,26 +96,35 @@ neu run
 OrionDesk/
 ├── frontend/                    # Vue 3 前端应用
 │   └── src/
-│       ├── api/                 # API 客户端封装
-│       │   └── client.ts        # Axios 统一调用层
+│       ├── api/                 # API 客户端（按领域拆分）
+│       │   ├── health.ts        # 健康检查 API
+│       │   ├── system.ts        # 系统信息 API
+│       │   ├── locations.ts     # 位置管理 API
+│       │   └── settings.ts      # 设置管理 API
+│       ├── utils/               # 工具函数
+│       │   └── request.ts       # Axios 统一请求封装
 │       ├── components/          # 可复用组件
-│       │   └── TitleBar.vue      # 自定义标题栏
-│       ├── stores/               # Pinia 状态管理
-│       │   ├── index.ts          # Store 导出
-│       │   ├── location.store.ts # 位置管理
-│       │   ├── setting.store.ts  # 设置管理
-│       │   └── update.store.ts   # 更新检查
-│       ├── views/                # 页面组件
-│       │   ├── HomeView.vue      # 首页
-│       │   ├── SettingsView.vue   # 设置页
-│       │   ├── NeutralinoDemo.vue # 功能演示
+│       │   ├── TitleBar.vue     # 自定义标题栏
+│       │   └── ApiDemo.vue      # API 演示组件
+│       ├── stores/              # Pinia 状态管理
+│       │   ├── index.ts         # Store 导出
+│       │   ├── location.store.ts# 位置管理
+│       │   ├── setting.store.ts # 设置管理
+│       │   └── update.store.ts  # 更新检查
+│       ├── views/               # 页面组件
+│       │   ├── HomeView.vue     # 首页
+│       │   ├── SettingsView.vue # 设置页
+│       │   ├── ApiDemoView.vue  # API 演示页
+│       │   ├── DocView.vue      # 文档页
+│       │   ├── NeutralinoDemo.vue # Neutralino API 演示
 │       │   └── WindowControl.vue  # 窗口控制
-│       ├── router/               # 路由配置
-│       ├── i18n/                 # 国际化配置
-│       ├── App.vue               # 根组件
-│       └── main.ts               # 入口文件
+│       ├── router/              # 路由配置
+│       ├── i18n/                # 国际化配置
+│       ├── App.vue              # 根组件
+│       └── main.ts              # 入口文件
 │
 ├── server/                      # Bun + Hono 后端
+│   ├── main.ts                  # 后端入口
 │   ├── core/
 │   │   ├── bootstrap.ts         # 启动引导
 │   │   └── server.ts            # Hono 服务器
@@ -125,15 +133,18 @@ OrionDesk/
 │   │   ├── system.routes.ts     # 系统信息
 │   │   ├── locations.routes.ts  # 位置管理
 │   │   └── settings.routes.ts   # 设置管理
-│   └── services/                # 业务服务
-│       ├── logger.service.ts    # 日志服务
-│       ├── database.service.ts  # 数据库服务
-│       ├── migration.service.ts # 数据迁移
-│       ├── location.service.ts  # 位置 CRUD
-│       └── setting.service.ts   # 设置 CRUD
+│   ├── services/                # 业务服务
+│   │   ├── logger.service.ts    # 日志服务
+│   │   ├── database.service.ts  # 数据库服务
+│   │   ├── migration.service.ts # 数据迁移
+│   │   ├── location.service.ts  # 位置 CRUD
+│   │   └── setting.service.ts   # 设置 CRUD
+│   └── shared/                  # 共享类型与工具
+│       └── types/
+│           └── api.types.ts     # API 类型定义
 │
 ├── resources/                   # Neutralino 资源目录
-├── data/                       # SQLite 数据存储
+├── data/                        # SQLite 数据存储
 ├── neutralino.config.json       # Neutralino 配置
 └── package.json                 # 项目配置
 ```
@@ -210,6 +221,16 @@ myRoutes.get('/data', (c) => {
 import { myRoutes } from '../routes/my.routes'
 
 app.route('/api/my', myRoutes)
+```
+
+**步骤 4**：创建前端 API 模块 `frontend/src/api/my.ts`
+
+```typescript
+import { get } from '@/utils/request'
+
+export const myApi = {
+  getData: () => get('/api/my/data'),
+}
 ```
 
 ### 4. 添加新 Store
@@ -300,14 +321,15 @@ await Neutralino.app.exit()
 
 ## 🔧 环境配置
 
-创建 `server/.env` 文件：
+后端配置通过 `server/.env` 文件管理：
 
 ```env
 PORT=17870
 HOST=127.0.0.1
 NODE_ENV=development
-DB_PATH=./data/data.db
 ```
+
+> 数据库文件默认存储在项目根目录的 `data/` 目录下。
 
 ## 📦 构建发布
 
