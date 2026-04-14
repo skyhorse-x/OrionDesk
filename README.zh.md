@@ -73,7 +73,7 @@
 
 ```bash
 # 1. 克隆项目
-git clone https://github.com/your-username/OrionDesk.git
+git clone https://github.com/skyhorse-x/OrionDesk.git
 cd OrionDesk
 
 # 2. 安装依赖

@@ -76,7 +76,7 @@ English | [中文](./README.zh.md)
 npm install -g @neutralinojs/neu
 
 # 2. Clone the repository
-git clone https://github.com/your-username/OrionDesk.git
+git clone https://github.com/skyhorse-x/OrionDesk.git
 cd OrionDesk
 
 # 3. Install dependencies
@@ -320,7 +320,7 @@ See `frontend/src/views/NeutralinoDemo.vue` for the complete demo.
 | `app.window.customTitleBar` | `false` | Custom title bar |
 | `locations.showHidden` | `false` | Show hidden files |
 
-## 🔧 Environment Configuration
+##  Environment Configuration
 
 Backend configuration is managed via `server/.env`:
 

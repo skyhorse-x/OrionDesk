@@ -73,7 +73,7 @@ English | [中文](./README.zh.md)
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/your-username/OrionDesk.git
+git clone https://github.com/skyhorse-x/OrionDesk.git
 cd OrionDesk
 
 # 2. Install dependencies
