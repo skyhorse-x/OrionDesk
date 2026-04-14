@@ -5,6 +5,8 @@
 [![Frontend](https://img.shields.io/badge/frontend-Vue%203-4FC08D)](https://vuejs.org/)
 [![Backend](https://img.shields.io/badge/backend-Bun%20%2B%20Hono-FF6B6B)](https://bun.sh/)
 
+English | [中文](./README.md)
+
 > 🖥️ Modern Lightweight Cross-Platform Desktop Application Template - Built with Neutralino.js + Vue 3 + Bun
 
 ## ✨ Features

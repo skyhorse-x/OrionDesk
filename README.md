@@ -5,6 +5,8 @@
 [![Frontend](https://img.shields.io/badge/frontend-Vue%203-4FC08D)](https://vuejs.org/)
 [![Backend](https://img.shields.io/badge/backend-Bun%20%2B%20Hono-FF6B6B)](https://bun.sh/)
 
+[English](./README.en.md) | 中文
+
 > 🖥️ 现代化轻量级跨平台桌面应用模板 - 基于 Neutralino.js + Vue 3 + Bun
 
 ## ✨ 特性
