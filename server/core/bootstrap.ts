@@ -22,7 +22,7 @@ export async function bootstrap() {
 
   const app = createApp()
 
-  Bun.serve({
+  const server = Bun.serve({
     port,
     hostname: host,
     fetch: app.fetch,
@@ -32,7 +32,7 @@ export async function bootstrap() {
     }
   })
 
-  const assignedPort = (globalThis as any).Bun?.server?.port || port
+  const assignedPort = server.port
   logger.info(`Server running at http://${host}:${assignedPort}`)
 
   const tmpDir = path.resolve(__dirname, '../../.tmp')

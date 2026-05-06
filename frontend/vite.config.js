@@ -5,22 +5,19 @@ import fs from "node:fs"
 
 const tmpDir = path.resolve(__dirname, "../.tmp")
 const configPath = path.resolve(__dirname, "../neutralino.config.json")
-const randomPort = Math.floor(Math.random() * 40000) + 10000
 
-if (fs.existsSync(configPath)) {
+const devPort = (() => {
   try {
     const cfg = JSON.parse(fs.readFileSync(configPath, "utf-8"))
-    if (cfg.cli && cfg.cli.devUrl) {
-      const url = new URL(cfg.cli.devUrl)
-      url.port = String(randomPort)
-      cfg.cli.devUrl = url.toString()
-      fs.writeFileSync(configPath, JSON.stringify(cfg, null, 2))
-      console.log(`[vite] Set random frontend port: ${randomPort}`)
+    const devUrl = cfg.cli?.frontendLibrary?.devUrl
+    if (devUrl) {
+      return parseInt(new URL(devUrl).port, 10)
     }
   } catch (e) {
-    console.warn("[vite] Could not update neutralino.config:", e.message)
+    console.warn("[vite] Could not read devUrl from config, using default port:", e.message)
   }
-}
+  return 38472
+})()
 
 function getBackendPort() {
   const portFile = path.join(tmpDir, "backend_port")
@@ -86,7 +83,7 @@ export default defineConfig(({ command }) => {
     },
     server: {
       host: "127.0.0.1",
-      port: randomPort,
+      port: devPort,
       strictPort: true,
       proxy: {
         "/api": {
