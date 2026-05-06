@@ -139,12 +139,12 @@ const formRules = {
 }
 
 const getRoleTagType = (role: string) => {
-  const types: Record<string, any> = {
+  const types: Record<string, string> = {
     Admin: 'danger',
     Editor: 'warning',
-    Viewer: ''
+    Viewer: 'info'
   }
-  return types[role] || ''
+  return types[role] || 'info'
 }
 
 const fetchData = () => {

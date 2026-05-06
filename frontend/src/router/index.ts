@@ -7,6 +7,11 @@ const routes = [
     component: () => import("@/views/HomeView.vue")
   },
   {
+    path: "/api",
+    name: "ApiDemo",
+    component: () => import("@/views/ApiDemoView.vue")
+  },
+  {
     path: "/data-table",
     name: "DataTable",
     component: () => import("@/views/DataTableView.vue")
