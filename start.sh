@@ -22,9 +22,6 @@ bun install
 
 echo "🚀 启动开发服务器..."
 echo ""
-echo "前端服务: http://localhost:4173"
-echo "后端服务: http://localhost:17870"
-echo ""
 echo "按 Ctrl+C 停止服务"
 echo ""
 

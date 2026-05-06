@@ -17,7 +17,7 @@ export async function bootstrap() {
   initDatabase()
   runMigrations()
 
-  const port = process.env.PORT ? parseInt(process.env.PORT) : 17870
+  const port = 0
   const host = process.env.HOST || '127.0.0.1'
 
   const app = createApp()
@@ -32,7 +32,14 @@ export async function bootstrap() {
     }
   })
 
-  logger.info(`Server running at http://${host}:${port}`)
+  const assignedPort = (globalThis as any).Bun?.server?.port || port
+  logger.info(`Server running at http://${host}:${assignedPort}`)
+
+  const tmpDir = path.resolve(__dirname, '../../.tmp')
+  if (!fs.existsSync(tmpDir)) {
+    fs.mkdirSync(tmpDir, { recursive: true })
+  }
+  fs.writeFileSync(path.join(tmpDir, 'backend_port'), String(assignedPort))
 
   process.on('SIGINT', () => {
     logger.info('Shutting down...')

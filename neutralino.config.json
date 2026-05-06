@@ -21,7 +21,7 @@
       "projectPath": "/",
       "devCommand": "npm run dev",
       "buildCommand": "bun run frontend:build",
-      "devUrl": "http://127.0.0.1:4173",
+      "devUrl": "http://127.0.0.1:38472",
       "patchFile": "/frontend/index.html",
       "waitTimeout": 30000
     }
