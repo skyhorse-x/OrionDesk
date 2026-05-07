@@ -6,13 +6,13 @@
   "port": 0,
   "enableServer": true,
   "enableNativeAPI": true,
-  "documentRoot": "/resources/",
+  "documentRoot": "/frontend/public/dist/",
   "url": "/",
   "cli": {
     "binaryName": "oriondesk",
-    "resourcesPath": "/resources/",
+    "resourcesPath": "/frontend/public/",
     "extensionsPath": "/extensions/",
-    "clientLibrary": "/resources/neutralino.js",
+    "clientLibrary": "/frontend/public/static/neutralino.js",
     "binaryVersion": "6.5.0",
     "clientVersion": "6.5.0",
     "distributionPath": "/dist/",
@@ -22,7 +22,7 @@
       "devCommand": "npm run dev",
       "buildCommand": "bun run frontend:build",
       "devUrl": "http://127.0.0.1:38472",
-      "patchFile": "/frontend/index.html",
+      "patchFile": "frontend/index.html",
       "waitTimeout": 30000
     }
   },

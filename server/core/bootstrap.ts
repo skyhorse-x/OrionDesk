@@ -26,7 +26,7 @@ export async function bootstrap() {
     port,
     hostname: host,
     fetch: app.fetch,
-    error: (error) => {
+    error: (error: Error) => {
       logger.error(`Server error: ${error.message}`, error)
       return new Response('Internal Server Error', { status: 500 })
     }
