@@ -43,9 +43,10 @@ function neutralinoVarsPlugin(command) {
     transformIndexHtml(html) {
       try {
         const authPath = path.resolve(__dirname, "../.tmp/auth_info.json")
+        let vars = ""
         if (fs.existsSync(authPath)) {
           const auth = JSON.parse(fs.readFileSync(authPath, "utf-8"))
-          const vars = `
+          vars = `
           <script>
             window.NL_PORT = ${auth.nlPort};
             window.NL_TOKEN = "${auth.nlToken}";
@@ -55,8 +56,17 @@ function neutralinoVarsPlugin(command) {
             window.NL_MODE = "window";
           </script>
           `
-          html = html.replace("</head>", vars + "</head>")
+        } else {
+          vars = `
+          <script>
+            window.NL_CVERSION = "6.5.0";
+            window.NL_APPID = "com.oriondesk.app";
+            window.NL_APPVERSION = "1.0.0";
+            window.NL_MODE = "window";
+          </script>
+          `
         }
+        html = html.replace("</head>", vars + "</head>")
       } catch (e) {
         console.warn("Could not inject Neutralino vars:", e.message)
       }

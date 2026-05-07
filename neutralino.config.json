@@ -49,6 +49,7 @@
       "maximize": false,
       "enableInspector": true,
       "injectClientLibrary": true,
+      "injectGlobals": true,
       "useSavedState": true
     }
   }
