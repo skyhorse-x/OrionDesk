@@ -12,15 +12,11 @@
     "backend": "bun run --cwd server start",
     "frontend:dev": "bun run --cwd frontend dev",
     "frontend:build": "bun run --cwd frontend build",
-    "shell": "npx @neutralinojs/neu run",
-    "build:shell": "npx @neutralinojs/neu build",
     "build": "npx @neutralinojs/neu build",
-    "build:all": "npx @neutralinojs/neu build",
-    "build:all:clean": "npx @neutralinojs/neu build",
+    "shell": "npx @neutralinojs/neu run",
     "test": "vitest run",
     "test:watch": "vitest",
-    "test:coverage": "vitest run --coverage",
-    "install:all": "bun install"
+    "test:coverage": "vitest run --coverage"
   },
   "devDependencies": {
     "concurrently": "^9.2.1"

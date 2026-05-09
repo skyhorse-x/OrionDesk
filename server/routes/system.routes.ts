@@ -129,25 +129,6 @@ systemRoutes.post('/clipboard', async (c) => {
   })
 })
 
-systemRoutes.post('/exec-command', async (c) => {
-  const body = await c.req.json()
-  const { command: cmd } = body
-
-  if (!cmd) {
-    return c.json({ error: 'Command is required' }, 400)
-  }
-
-  return new Promise<Response>((resolve) => {
-    exec(cmd, { timeout: 30000 }, (error, stdout, stderr) => {
-      if (error) {
-        resolve(c.json({ error: error.message, output: stdout, stderr }, 500))
-      } else {
-        resolve(c.json({ success: true, output: stdout, stderr }))
-      }
-    })
-  })
-})
-
 systemRoutes.post('/dialog/message', async (c) => {
   const body = await c.req.json()
   const { type, title, message } = body

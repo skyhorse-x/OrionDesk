@@ -6,10 +6,30 @@ import { systemRoutes } from '../routes/system.routes'
 import { locationsRoutes } from '../routes/locations.routes'
 import { settingsRoutes } from '../routes/settings.routes'
 
+const isDev = process.env.NODE_ENV !== 'production'
+
 export function createApp() {
   const app = new Hono()
 
-  app.use('*', cors())
+  app.use(
+    '*',
+    cors({
+      origin: isDev
+        ? (origin) => {
+            if (!origin) return true
+            try {
+              const url = new URL(origin)
+              return url.hostname === '127.0.0.1' || url.hostname === 'localhost'
+            } catch {
+              return false
+            }
+          }
+        : 'http://127.0.0.1',
+      allowMethods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+      allowHeaders: ['Content-Type', 'Authorization'],
+      credentials: false
+    })
+  )
   app.use('*', async (c, next) => {
     const start = Date.now()
     await next()

@@ -6,6 +6,7 @@
   "port": 0,
   "enableServer": true,
   "enableNativeAPI": true,
+  "singlePageServe": true,
   "documentRoot": "/frontend/public/dist/",
   "url": "/",
   "cli": {
@@ -45,6 +46,7 @@
       "height": 800,
       "minWidth": 1024,
       "minHeight": 600,
+      "center": true,
       "resizable": true,
       "maximize": false,
       "enableInspector": true,

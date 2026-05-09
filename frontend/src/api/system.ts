@@ -9,7 +9,6 @@ export const systemApi = {
     read: () => post('/api/system/clipboard', { action: 'read' }),
     write: (text: string) => post('/api/system/clipboard', { action: 'write', text })
   },
-  execCommand: (command: string) => post('/api/system/exec-command', { command }),
   dialog: {
     message: (type: string, title: string, message: string) =>
       post('/api/system/dialog/message', { type, title, message }),
