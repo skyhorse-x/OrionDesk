@@ -52,7 +52,8 @@
       "enableInspector": true,
       "injectClientLibrary": true,
       "injectGlobals": true,
-      "useSavedState": true
+      "useSavedState": true,
+      "icon": "/static/icon.png"
     }
   }
 }

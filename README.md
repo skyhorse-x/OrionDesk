@@ -129,89 +129,94 @@ Bundle Size:
 
 ### Requirements
 
-- **Bun** >= 1.0
-- **Node.js** >= 18 (for installing Neutralino CLI)
-- **Neutralino CLI**: `npm install -g @neutralinojs/neu`
+- **Bun** >= 1.0 ([Install](https://bun.sh/))
+- **Node.js** >= 18 (for Neutralino CLI)
+- **Neutralino CLI**: `@neutralinojs/neu`
 
 ### Installation
 
 ```bash
-# 1. Install Neutralino CLI (global, first time only)
+# 1. Install Neutralino CLI (first time only)
 npm install -g @neutralinojs/neu
 
 # 2. Clone the repository
-git clone https://github.com/skyhorse-x/OrionDesk.git
+git clone <repository-url>
 cd OrionDesk
 
 # 3. Install dependencies
 bun install
 
-# 4. Start development mode
+# 4. Start development
+bun run dev
+
+# Or use Neutralino CLI (recommended)
 neu run
+```
+
+### Quick Start
+
+```bash
+# Full-stack development (frontend + backend)
+bun run dev
+
+# Frontend only
+bun run frontend:dev
+
+# Backend only
+bun run backend
 ```
 
 ### Development Commands
 
 | Command | Description |
 |---------|-------------|
+| `bun run dev` | Start frontend + backend (full-stack) |
+| `bun run backend` | Start backend only |
+| `bun run frontend:dev` | Start frontend only |
+| `bun run frontend:build` | Build frontend for production |
 | `neu run` | Start desktop app in development mode |
 | `neu build` | Build desktop app installer |
+
+### Build Commands
+
+```bash
+# Build frontend
+bun run frontend:build
+
+# Build desktop app (includes frontend build)
+neu build
+```
 
 ## 📁 Project Structure
 
 ```
 OrionDesk/
 ├── frontend/                    # Vue 3 Frontend
-│   └── src/
-│       ├── api/                 # API clients (domain-split)
-│       │   ├── health.ts        # Health check API
-│       │   ├── system.ts        # System info API
-│       │   ├── locations.ts     # Location management API
-│       │   └── settings.ts      # Settings management API
-│       ├── utils/               # Utilities
-│       │   └── request.ts       # Axios request wrapper
-│       ├── components/          # Reusable components
-│       │   ├── TitleBar.vue     # Custom title bar
-│       │   └── ApiDemo.vue      # API demo component
-│       ├── stores/              # Pinia stores
-│       │   ├── index.ts         # Store exports
-│       │   ├── location.store.ts# Location management
-│       │   ├── setting.store.ts # Settings management
-│       │   └── update.store.ts  # Update checker
-│       ├── views/               # Page components
-│       │   ├── HomeView.vue     # Home page (with demo)
-│       │   ├── ApiDemoView.vue  # API demo page
-│       │   ├── DataTableView.vue # Data table page
-│       │   └── SettingsView.vue # Settings page
-│       ├── router/              # Router config
-│       ├── i18n/                # i18n config
-│       ├── App.vue              # Root component
-│       └── main.ts              # Entry file
+│   ├── src/
+│   │   ├── api/                 # API clients
+│   │   ├── utils/              # Utilities (request wrapper)
+│   │   ├── components/          # Reusable components
+│   │   ├── stores/             # Pinia stores
+│   │   ├── views/              # Page components
+│   │   ├── router/             # Router config
+│   │   └── i18n/               # i18n config
+│   ├── public/
+│   │   ├── dist/               # Vite build output
+│   │   └── static/             # Static assets (neutralino.js, icon.png)
+│   └── vite.config.js
 │
 ├── server/                      # Bun + Hono Backend
-│   ├── main.ts                  # Backend entry
 │   ├── core/
-│   │   ├── bootstrap.ts         # Bootstrap
-│   │   └── server.ts            # Hono server
-│   ├── routes/                  # API routes
-│   │   ├── health.routes.ts     # Health check
-│   │   ├── system.routes.ts     # System info
-│   │   ├── locations.routes.ts  # Location management
-│   │   └── settings.routes.ts   # Settings management
-│   ├── services/                # Business services
-│   │   ├── logger.service.ts    # Logging
-│   │   ├── database.service.ts  # Database
-│   │   ├── migration.service.ts # Migrations
-│   │   ├── location.service.ts  # Location CRUD
-│   │   └── setting.service.ts   # Settings CRUD
-│   └── shared/                  # Shared types & utilities
-│       └── types/
-│           └── api.types.ts     # API type definitions
+│   │   ├── bootstrap.ts        # Bootstrap & startup
+│   │   └── server.ts           # Hono server
+│   ├── routes/                # API routes
+│   ├── services/              # Business services
+│   ├── data/                  # SQLite database
+│   └── .storage/             # Neutralino storage
 │
-├── resources/                   # Neutralino resources
-├── data/                        # SQLite data storage
-├── neutralino.config.json       # Neutralino config
-└── package.json                 # Project config
+├── neutralino.config.json       # Neutralino configuration
+├── package.json                 # Root workspace config
+└── .env.example                 # Environment variables template
 ```
 
 ## 🎨 Customization
@@ -224,11 +229,35 @@ OrionDesk/
 
 // neutralino.config.json
 {
-  "appname": "Your App Name"
+  "applicationName": "Your App Name"
 }
 ```
 
-### 2. Add New Page
+### 2. Change App Logo
+
+**Step 1**: Prepare icon file (PNG format, 256x256 or 512x512 recommended)
+
+**Step 2**: Place icon file to `frontend/public/static/icon.png`
+
+**Step 3**: Configure in `neutralino.config.json`:
+
+```json
+{
+  "modes": {
+    "window": {
+      "icon": "/static/icon.png"
+    }
+  }
+}
+```
+
+| Platform | Format | Notes |
+|----------|--------|-------|
+| macOS | `.icns` | Convert PNG to `.icns` using `iconutil` or online tools |
+| Windows | `.ico` | Convert PNG to `.ico` using online tools |
+| Linux | PNG | Uses PNG directly |
+
+### 3. Add New Page
 
 **Step 1**: Create view component `frontend/src/views/MyPage.vue`
 
@@ -384,9 +413,11 @@ See `frontend/src/views/NeutralinoDemo.vue` for the complete demo.
 | `app.window.customTitleBar` | `false` | Custom title bar |
 | `locations.showHidden` | `false` | Show hidden files |
 
-##  Environment Configuration
+## 🔧 Environment Configuration
 
-Backend configuration is managed via `server/.env`:
+### Backend (.env)
+
+Create `server/.env` or copy from `server/.env.example`:
 
 ```env
 PORT=17870
@@ -394,7 +425,18 @@ HOST=127.0.0.1
 NODE_ENV=development
 ```
 
-> The database file is stored in the `data/` directory at the project root.
+### Frontend
+
+Frontend reads backend URL from Vite proxy configuration (`vite.config.js`). No additional `.env` needed for local development.
+
+### Directory Structure
+
+| Path | Description |
+|------|-------------|
+| `server/data/` | SQLite database files |
+| `server/.storage/` | Neutralino storage files |
+| `frontend/public/dist/` | Vite build output |
+| `frontend/public/static/` | Static assets |
 
 ## 📦 Build & Release
 
